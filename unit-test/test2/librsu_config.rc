@@ -1,0 +1,3 @@
+# This is the default rc file for test cases
+rsu-spt-checksum 0
+log DBG stderr

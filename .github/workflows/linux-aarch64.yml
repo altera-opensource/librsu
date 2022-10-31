@@ -1,0 +1,40 @@
+name: linux-aarch64 build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux-aarch64_build:
+    runs-on: [self-hosted]
+
+
+    steps:
+      - name: cleanup
+        run: rm -rf ${{github.workspace}}/work/
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          path: ${{github.workspace}}/work/librsu
+          fetch-depth: 2
+
+      - name: configure and build
+        uses: intel-innersource/frameworks.actions.fpga.ci.arc@v1.0
+        with:
+          resources: |
+            arm_gnu/linaro/aarch64/9.2
+            cmake/3.24.0
+            ninja/1.10.2
+          script: |
+            cmake -S ${{github.workspace}}/work/librsu -B ${{github.workspace}}/work/build -DPLATFORM=linux-aarch64 -G"Ninja"
+            cmake --build ${{github.workspace}}/work/build
+

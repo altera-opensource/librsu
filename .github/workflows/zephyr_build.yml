@@ -1,0 +1,75 @@
+name: zephyr-build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+    - name: remove previous zephyr-build
+      run: rm -rf zephyr_workspace/
+      working-directory: ${{github.workspace}}
+
+    - name: install dependencies and get zephyr
+      uses: intel-innersource/frameworks.actions.fpga.ci.arc@v1.0
+      with:
+        resources: |
+          cmake/3.24.0
+          python/3.8.10
+        script: |
+          mkdir -p ${{github.workspace}}/zephyr_workspace
+          python3 -m pip install west
+          cd ${{github.workspace}}/zephyr_workspace
+          python3 -m west init -m https://github.com/intel-innersource/os.rtos.zephyr.socfpga.zephyr-socfpga-dev.git --mr unifiedLibRSU
+          python3 -m west config --local manifest.group-filter -- "-ci,-hal,-crypto,-debug,-tools,-tee"
+          python3 -m pip install -r scripts/requirements-base.txt
+          python3 -m pip install yq
+
+    - name: Change LibrRSU revision
+      uses: intel-innersource/frameworks.actions.fpga.ci.arc@v1.0
+      with:
+        resources: |
+          python/3.8.10
+        script: |
+          set -e
+          cd ${{github.workspace}}/zephyr_workspace/zephyr
+          cat submanifests/librsu.yml
+          python3 -m yq -iy '.manifest.projects[0].revision = "${{ github.ref }}"' submanifests/librsu.yml
+          python3 -m yq -iy '.manifest.projects[0].url = "${{ github.server_url }}/${{ github.repository }}"' submanifests/librsu.yml
+          cat submanifests/librsu.yml
+
+    - name: Perform west update
+      uses: intel-innersource/frameworks.actions.fpga.ci.arc@v1.0
+      with:
+        resources: |
+          cmake/3.24.0
+          python/3.8.10
+          zephyr_sdk/${{vars.ZEPHYR_SDK_VERSION}}
+        script: |
+          cd ${{github.workspace}}/zephyr_workspace/zephyr
+          python3 -m west update -n
+
+    - name: Build CLI App
+      uses: intel-innersource/frameworks.actions.fpga.ci.arc@v1.0
+      with:
+        resources: |
+          cmake/3.24.0
+          python/3.8.10
+          zephyr_sdk/${{vars.ZEPHYR_SDK_VERSION}}
+        script: |
+          cd ${{github.workspace}}/zephyr_workspace/zephyr
+          python3 -m west build -b intel_socfpga_agilex_socdk samples/boards/intel_socfpga/cli -d build_cli_a
+

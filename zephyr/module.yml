@@ -1,0 +1,4 @@
+name: uniLibRSU
+build:
+  cmake-ext: true
+  kconfig-ext: true

@@ -1,0 +1,61 @@
+name: coverity scan
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  coverity-scan:
+    runs-on: [self-hosted]
+    env:
+      ARC_RESOURCE: cmake/3.24.0 gcc/${{vars.GCC_VERSION}}
+
+    steps:
+      - name: Setup Coverity
+        uses: intel-innersource/frameworks.actions.setup-coverity@v1
+        env:
+          https_proxy: proxy-dmz.intel.com:912
+        with:
+          version: '2022.3.1'
+
+      - name: Version check
+        run: coverity --version
+
+      - name: cleanup
+        run: rm -rf ${{github.workspace}}/work/
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          path: ${{github.workspace}}/work/librsu
+          fetch-depth: 2
+
+      - name : Coverity Configure
+        run: |
+            cov-configure --config ${{github.workspace}}/work/config.xml --comptype prefix --compiler ccache --template
+            cov-configure --config ${{github.workspace}}/work/config.xml --template --compiler gcc --comptype gcc
+
+      - name: configure cmake
+        run: arc shell ${{env.ARC_RESOURCE}} -- cmake -S ${{github.workspace}}/work/librsu -B ${{github.workspace}}/work/build -G"Ninja" -DUNIT_TEST=OFF
+
+      - name: coverity analysis
+        uses: intel-innersource/frameworks.actions.coverity-analysis@v3
+        with:
+          config-file: ${{github.workspace}}/work/config.xml
+          build-cmd: arc shell ${{env.ARC_RESOURCE}} -- cmake --build ${{github.workspace}}/work/build
+          fail-if-issues-found: true
+          html-dir: ${{github.workspace}}/work/html
+
+      - name: archive build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverty_report
+          path: ${{github.workspace}}/work/html

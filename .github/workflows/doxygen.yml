@@ -1,0 +1,47 @@
+name: doxygen build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  doxygen_build:
+    runs-on: [self-hosted]
+
+    steps:
+      - name: cleanup
+        run: rm -rf ${{github.workspace}}/work/
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          path: ${{github.workspace}}/work/librsu
+          fetch-depth: 2
+
+      - name: configure and build
+        uses: intel-innersource/frameworks.actions.fpga.ci.arc@v1.0
+        with:
+          resources: |
+            gcc/${{vars.GCC_VERSION}}
+            cmake/3.24.0
+            ninja/1.10.2
+            doxygen/1.8.16
+          script: |
+            cmake -S ${{github.workspace}}/work/librsu -B ${{github.workspace}}/work/build -DBUILD_DOC=ON -G"Ninja"
+            rm -rf ${{github.workspace}}/work/librsu/docs/html
+            cmake --build ${{github.workspace}}/work/build
+
+      - if: ${{ github.ref == 'refs/heads/main' }}
+        name: publish docs
+        uses: intel-innersource/frameworks.actions.thirdparty.actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{github.workspace}}/work/build/html

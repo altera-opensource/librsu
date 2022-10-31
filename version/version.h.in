@@ -1,0 +1,18 @@
+/*
+ * Copyright (C) 2023-2024 Intel Corporation
+ * SPDX-License-Identifier: MIT-0
+ */
+
+#ifndef VERSION_H
+#define VERSION_H
+
+#include <libRSU_OSAL.h>
+
+#define RSU_POC_VERSION_MAJOR @PROJECT_VERSION_MAJOR@
+#define RSU_POC_VERSION_MINOR @PROJECT_VERSION_MINOR@
+
+extern const RSU_OSAL_CHAR *kGitHash;
+extern const RSU_OSAL_U32 rsu_poc_verion_major;
+extern const RSU_OSAL_U32 rsu_poc_verion_minor;
+
+#endif // VERSION_H

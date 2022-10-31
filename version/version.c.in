@@ -1,0 +1,10 @@
+/*
+ * Copyright (C) 2023-2024 Intel Corporation
+ * SPDX-License-Identifier: MIT-0
+ */
+
+#include <version.h>
+
+const RSU_OSAL_CHAR *kGitHash = "@GIT_HASH@";
+const uint32_t rsu_poc_verion_major = RSU_POC_VERSION_MAJOR;
+const uint32_t rsu_poc_verion_minor = RSU_POC_VERSION_MINOR;

@@ -1,0 +1,49 @@
+name: unit-test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PR_NUMBER: ${{ github.event.number }}
+  BUILD_TYPE: "Release"
+
+jobs:
+  unit-test:
+    runs-on: self-hosted
+    steps:
+
+    - name: cleanup
+      run: rm -rf ${{github.workspace}}/work/
+
+    - uses: actions/checkout@v3
+      with:
+        path: ${{github.workspace}}/work/librsu
+
+    - name: configure build and test
+      uses: intel-innersource/frameworks.actions.fpga.ci.arc@v1.0
+      with:
+        resources: |
+          acdskit
+          arm_gnu/linaro/aarch64
+          cmake/3.24.0
+          gcc/${{vars.GCC_VERSION}}
+          lcov/1.15
+        script: |
+          cmake -S ${{github.workspace}}/work/librsu -B ${{github.workspace}}/work/build -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DUNIT_TEST=ON -G"Ninja"
+          cmake --build ${{github.workspace}}/work/build --config ${{env.BUILD_TYPE}}
+          ctest --test-dir ${{github.workspace}}/work/build
+          cmake --build ${{github.workspace}}/work/build --target coverage
+
+    - if: ${{ github.ref != 'refs/heads/main' }}
+      name: Analyse coverage
+      uses: intel-innersource/frameworks.actions.thirdparty.lcov-code-coverage@v0.4.0
+      with:
+        pr-number: ${{ env.PR_NUMBER }}
+        lcov-file: ${{github.workspace}}/work/build/coverage/lcov.info
