@@ -142,32 +142,48 @@ TEST(librsu_test4, test_init_slot_raw_program_verify)
 
 TEST(librsu_test4, test_init_slot_priority)
 {
-	int ret = 0, slot;
+	int ret = 0, slot2, slot3;
 	ret = librsu_init((RSU_OSAL_CHAR *)"librsu_config.rc");
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"P3");
-	ASSERT_EQ(ret, 4);
+	slot2 = rsu_slot_by_name((RSU_OSAL_CHAR *)"P2");
+	ASSERT_EQ(slot2, 3);
 
-	slot = ret;
+	slot3 = rsu_slot_by_name((RSU_OSAL_CHAR *)"P3");
+	ASSERT_EQ(slot3, 4);
 
-	ret = rsu_slot_priority(slot);
+	ret = rsu_slot_priority(slot2);
+	ASSERT_EQ(ret, 2);
+
+	ret = rsu_slot_priority(slot3);
 	ASSERT_EQ(ret, 3);
 
-	ret = rsu_slot_disable(slot);
+	ret = rsu_slot_disable(slot2);
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_priority(slot);
+	ret = rsu_slot_priority(slot3);
+	ASSERT_EQ(ret, 2);
+
+	ret = rsu_slot_enable(slot2);
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_enable(slot);
-	ASSERT_EQ(ret, 0);
-
-	ret = rsu_slot_priority(slot);
+	ret = rsu_slot_priority(slot2);
 	ASSERT_EQ(ret, 1);
 
-	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"P3");
-	ASSERT_EQ(ret, 4);
+	ret = rsu_slot_priority(slot3);
+	ASSERT_EQ(ret, 3);
+
+	ret = rsu_slot_enable(slot2);
+	ASSERT_EQ(ret, 0);
+
+	ret = rsu_slot_priority(slot2);
+	ASSERT_EQ(ret, 1);
+
+	ret = rsu_slot_priority(slot3);
+	ASSERT_EQ(ret, 3);
+
+	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"P2");
+	ASSERT_EQ(ret, 3);
 
 	librsu_exit();
 }

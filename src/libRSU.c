@@ -1062,6 +1062,17 @@ RSU_OSAL_INT rsu_slot_enable(RSU_OSAL_INT slot)
 		return -ESLOTNUM;
 	}
 
+	part_num = librsu_misc_slot2part(intf, slot);
+	if (part_num < 0) {
+		MUTEX_UNLOCK();
+		return -ESLOTNUM;
+	}
+
+	if (intf->priority.remove(part_num)) {
+		MUTEX_UNLOCK();
+		return -ELOWLEVEL;
+	}
+
 	if (intf->priority.add(part_num)) {
 		MUTEX_UNLOCK();
 		return -ELOWLEVEL;
