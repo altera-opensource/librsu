@@ -4,7 +4,6 @@ This repo contains the Unified remote system update which is made platform indep
 
 Note: Currently Zephyr RTOS is the only officially supported platform.
 
-For doxygen documentation click this [link](https://reimagined-adventure-93rm25p.pages.github.io/)
 
 # Remote System Update (RSU)
 Remote system update feature allows you to update the FPGA image and reconfigure Agilex devices remotley on field with fallback mechanism support.

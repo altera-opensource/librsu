@@ -39,9 +39,9 @@ jobs:
             rm -rf ${{github.workspace}}/work/librsu/docs/html
             cmake --build ${{github.workspace}}/work/build
 
-      - if: ${{ github.ref == 'refs/heads/main' }}
-        name: publish docs
-        uses: intel-innersource/frameworks.actions.thirdparty.actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ${{github.workspace}}/work/build/html
+      # - if: ${{ github.ref == 'refs/heads/main' }}
+      #   name: publish docs
+      #   uses: intel-innersource/frameworks.actions.thirdparty.actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: ${{github.workspace}}/work/librsu/docs/html
