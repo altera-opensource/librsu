@@ -16,21 +16,23 @@ jobs:
   coverity-scan:
     runs-on: [self-hosted]
     env:
-      ARC_RESOURCE: cmake/3.24.0 gcc/${{vars.GCC_VERSION}}
+      ARC_RESOURCE: cmake/3.24.0 coverity/${{vars.COVERITY_VERSION}} arm_gnu/linaro/aarch64
 
     steps:
-      - name: Setup Coverity
-        uses: intel-innersource/frameworks.actions.setup-coverity@v1
-        env:
-          https_proxy: proxy-dmz.intel.com:912
-        with:
-          version: '2022.3.1'
-
       - name: Version check
-        run: coverity --version
+        uses: intel-innersource/frameworks.actions.fpga.ci.arc@v1.0
+        with:
+          resources: |
+            cmake/3.24.0 gcc/${{vars.GCC_VERSION}}
+            coverity/${{vars.COVERITY_VERSION}}
+            arm_gnu/linaro/aarch64/9.2
+          script: |
+            coverity --version
 
       - name: cleanup
-        run: rm -rf ${{github.workspace}}/work/
+        run: |
+            rm -rf ${{github.workspace}}/work/
+            mkdir -p ${{github.workspace}}/work/report/
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -38,24 +40,30 @@ jobs:
           path: ${{github.workspace}}/work/librsu
           fetch-depth: 2
 
-      - name : Coverity Configure
-        run: |
+      - name : Configure cmake
+        uses: intel-innersource/frameworks.actions.fpga.ci.arc@v1.0
+        with:
+          resources: |
+            cmake/3.24.0 gcc/${{vars.GCC_VERSION}}
+            arm_gnu/linaro/aarch64/9.2
+          script: |
+            cmake -S ${{github.workspace}}/work/librsu -B ${{github.workspace}}/work/build -G"Ninja" -DPLATFORM=linux-aarch64
+
+      - name : Coverity Configure build capture & analyze
+        uses: intel-innersource/frameworks.actions.fpga.ci.arc@v1.0
+        with:
+          resources: |
+            cmake/3.24.0 gcc/${{vars.GCC_VERSION}}
+            coverity/${{vars.COVERITY_VERSION}}
+            arm_gnu/linaro/aarch64/9.2
+          script: |
             cov-configure --config ${{github.workspace}}/work/config.xml --comptype prefix --compiler ccache --template
             cov-configure --config ${{github.workspace}}/work/config.xml --template --compiler gcc --comptype gcc
+            cov-build --config ${{github.workspace}}/work/config.xml --dir ${{github.workspace}}/work/out cmake --build ${{github.workspace}}/work/build
+            cov-analyze --dir ${{github.workspace}}/work/out
+            cov-format-errors --dir ${{github.workspace}}/work/out --emacs-style --strip-path ${{github.workspace}}/work/ --exclude-files '/build/.*\.c$' | tee -a ${{github.workspace}}/work/report/report.txt
 
-      - name: configure cmake
-        run: arc shell ${{env.ARC_RESOURCE}} -- cmake -S ${{github.workspace}}/work/librsu -B ${{github.workspace}}/work/build -G"Ninja" -DUNIT_TEST=OFF
-
-      - name: coverity analysis
-        uses: intel-innersource/frameworks.actions.coverity-analysis@v3
-        with:
-          config-file: ${{github.workspace}}/work/config.xml
-          build-cmd: arc shell ${{env.ARC_RESOURCE}} -- cmake --build ${{github.workspace}}/work/build
-          fail-if-issues-found: true
-          html-dir: ${{github.workspace}}/work/html
-
-      - name: archive build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverty_report
-          path: ${{github.workspace}}/work/html
+      - name : Check for errors
+        run: |
+          lines=$(wc -l < ${{github.workspace}}/work/report/report.txt)
+          exit $lines
