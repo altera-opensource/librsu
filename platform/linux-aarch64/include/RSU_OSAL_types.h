@@ -17,7 +17,7 @@ extern "C" {
 #endif /* __cplusplus */
 #include <stdio.h>
 #include <stdint.h>
-#include <sys/types.h>
+#include <linux/types.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include <stddef.h>
@@ -26,22 +26,22 @@ extern "C" {
 #include <stdbool.h>
 
 /** unsigned 64 bit*/
-typedef uint64_t RSU_OSAL_U64;
+typedef __u64 RSU_OSAL_U64;
 /** unsigned 32 bit*/
-typedef uint32_t RSU_OSAL_U32;
+typedef __u32 RSU_OSAL_U32;
 /** unsigned 16 bit*/
-typedef uint16_t RSU_OSAL_U16;
+typedef __u16 RSU_OSAL_U16;
 /** unsigned 8 bit*/
-typedef uint8_t RSU_OSAL_U8;
+typedef __u8 RSU_OSAL_U8;
 
 /** signed 64 bit*/
-typedef int64_t RSU_OSAL_S64;
+typedef __s64 RSU_OSAL_S64;
 /** signed 32 bit*/
-typedef int32_t RSU_OSAL_S32;
+typedef __s32 RSU_OSAL_S32;
 /** unsigned 16 bit*/
-typedef int16_t RSU_OSAL_S16;
+typedef __s16 RSU_OSAL_S16;
 /** unsigned 8 bit*/
-typedef int8_t RSU_OSAL_S8;
+typedef __s8 RSU_OSAL_S8;
 
 /** void type*/
 typedef void RSU_OSAL_VOID;
