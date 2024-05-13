@@ -20,8 +20,12 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
+ * @brief max limit of max retry value.
+ */
+#define RSU_MAX_RETRY_LIMIT	(3UL)
+
+/**
  * @brief struct rsu_dcmf_status holds the status of 4 dcmf copy in QSPI.
- *
  */
 struct rsu_dcmf_status {
 	/** DCMF status information on four copies in QSPI*/
@@ -30,7 +34,6 @@ struct rsu_dcmf_status {
 
 /**
  * @brief struct rsu_dcmf_version holds the version of 4 dcmf copy in QSPI.
- *
  */
 struct rsu_dcmf_version {
 	/** DCMF version information on 4 copies of DCMF in QSPI*/
