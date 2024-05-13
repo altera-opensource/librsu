@@ -246,10 +246,10 @@ static RSU_OSAL_INT check_spt(RSU_OSAL_VOID)
 	RSU_OSAL_BOOL cpb0_found = false;
 	RSU_OSAL_BOOL cpb1_found = false;
 
-	RSU_LOG_INF("MAX length of a name = %u bytes", max_len - 1);
+	RSU_LOG_DBG("MAX length of a name = %u bytes", max_len - 1);
 
 	if (plat_database->spt->version > SPT_VERSION && librsu_cfg_spt_checksum_enabled()) {
-		RSU_LOG_INF("check SPT checksum \n");
+		RSU_LOG_DBG("check SPT checksum \n");
 		spt_data = (RSU_OSAL_CHAR *)rsu_malloc(SPT_SIZE);
 		if (!spt_data) {
 			RSU_LOG_ERR("failed to allocate spt_data\n");
@@ -281,7 +281,7 @@ static RSU_OSAL_INT check_spt(RSU_OSAL_VOID)
 			plat_database->spt->partition[x].name[max_len - 1] = '\0';
 		}
 
-		RSU_LOG_INF("offset=0x%016llx, length=0x%08x\n",
+		RSU_LOG_DBG("offset=0x%016llx, length=0x%08x\n",
 			plat_database->spt->partition[x].offset,
 			plat_database->spt->partition[x].length);
 
@@ -316,7 +316,7 @@ static RSU_OSAL_INT check_spt(RSU_OSAL_VOID)
 			}
 		}
 
-		RSU_LOG_INF("%-16s %016llX - %016llX (%X)", plat_database->spt->partition[x].name,
+		RSU_LOG_DBG("%-16s %016llX - %016llX (%X)", plat_database->spt->partition[x].name,
 			plat_database->spt->partition[x].offset,
 			(plat_database->spt->partition[x].offset +
 			 plat_database->spt->partition[x].length - 1),
@@ -357,7 +357,7 @@ static RSU_OSAL_INT load_spt(RSU_OSAL_VOID)
 	RSU_OSAL_INT ret;
 	struct librsu_ll_intf *intf = plat_database->hal;
 
-	RSU_LOG_INF("reading SPT1");
+	RSU_LOG_DBG("reading SPT1");
 	ret = read_dev(plat_database->spt_addr.spt1_address, spt_ptr,
 		       sizeof(struct SUB_PARTITION_TABLE));
 	if (ret != 0) {
@@ -375,7 +375,7 @@ static RSU_OSAL_INT load_spt(RSU_OSAL_VOID)
 		RSU_LOG_ERR("Bad SPT1 magic number 0x%08X", plat_database->spt->magic_number);
 	}
 
-	RSU_LOG_INF("reading SPT0");
+	RSU_LOG_DBG("reading SPT0");
 	ret = read_dev(plat_database->spt_addr.spt0_address, spt_ptr,
 		       sizeof(struct SUB_PARTITION_TABLE));
 	if (ret != 0) {
@@ -503,7 +503,7 @@ static RSU_OSAL_INT check_cpb(RSU_OSAL_VOID)
 		for (y = 0; y < plat_database->spt->partitions; y++) {
 			if (plat_database->cpb_slots[x] ==
 			    plat_database->spt->partition[y].offset) {
-				RSU_LOG_INF("cpb_slots[%u] = %s", x,
+				RSU_LOG_DBG("cpb_slots[%u] = %s", x,
 					plat_database->spt->partition[y].name);
 				break;
 			}
@@ -595,7 +595,7 @@ static RSU_OSAL_INT load_cpb(RSU_OSAL_VOID)
 		return -EACCES;
 	}
 
-	RSU_LOG_INF("state=0x%08llX\n", info.state);
+	RSU_LOG_DBG("state=0x%08llX\n", info.state);
 
 	if (plat_database->cpb_fixed == false && info.state == STATE_CPB0_CPB1_CORRUPTED) {
 		RSU_LOG_ERR("FW detects both CPBs corrupted\n");
@@ -641,7 +641,7 @@ static RSU_OSAL_INT load_cpb(RSU_OSAL_VOID)
 			cpb1_good = true;
 		}
 	} else {
-		RSU_LOG_ERR("Bad CPB1 is bad");
+		RSU_LOG_WRN("Bad CPB1 is bad");
 	}
 
 	if (!cpb0_corrupted) {
@@ -655,7 +655,7 @@ static RSU_OSAL_INT load_cpb(RSU_OSAL_VOID)
 				cpb0_good = true;
 			}
 		} else {
-			RSU_LOG_ERR("CPB0 is bad");
+			RSU_LOG_WRN("CPB0 is bad");
 		}
 	}
 
@@ -672,7 +672,7 @@ static RSU_OSAL_INT load_cpb(RSU_OSAL_VOID)
 	}
 
 	if (cpb0_good) {
-		RSU_LOG_ERR("warning: Restoring CPB1");
+		RSU_LOG_WRN("warning: Restoring CPB1");
 		if (erase_part(plat_database->cpb1_part)) {
 			RSU_LOG_ERR("error: Failed erase CPB1");
 			return -EPERM;
@@ -703,7 +703,7 @@ static RSU_OSAL_INT load_cpb(RSU_OSAL_VOID)
 			return -EACCES;
 		}
 
-		RSU_LOG_ERR("warning: Restoring CPB0");
+		RSU_LOG_WRN("warning: Restoring CPB0");
 		if (erase_part(plat_database->cpb0_part)) {
 			RSU_LOG_ERR("error: Failed erase CPB0");
 			return -EPERM;
@@ -1234,7 +1234,7 @@ static RSU_OSAL_INT priority_add(RSU_OSAL_INT part_num)
 		}
 	}
 
-	RSU_LOG_INF("Compressing CPB");
+	RSU_LOG_WRN("Compressing CPB");
 
 	for (x = 0, y = 0; x < plat_database->cpb->header.image_ptr_slots; x++) {
 		if (plat_database->cpb_slots[x] != ERASED_ENTRY &&
@@ -1352,7 +1352,7 @@ static RSU_OSAL_INT restore_spt_from_file(RSU_OSAL_CHAR *name)
 		rsu_close(fp);
 		return ret;
 	}
-	RSU_LOG_INF("read size is %d", ret);
+	RSU_LOG_DBG("read size is %d", ret);
 	calc_crc = rsu_crc32(0, (RSU_OSAL_VOID *)spt_data, SPT_SIZE);
 	rsu_fseek(SPT_SIZE, RSU_SEEK_SET, fp);
 	ret = rsu_read(&crc_from_saved_file, sizeof(crc_from_saved_file), fp);
@@ -1362,7 +1362,7 @@ static RSU_OSAL_INT restore_spt_from_file(RSU_OSAL_CHAR *name)
 		rsu_close(fp);
 		return ret;
 	}
-	RSU_LOG_INF("read size is %d", ret);
+	RSU_LOG_DBG("read size is %d", ret);
 
 	if (crc_from_saved_file != calc_crc) {
 		RSU_LOG_ERR("saved file is corrupted");
@@ -1636,7 +1636,7 @@ static RSU_OSAL_INT restore_cpb_from_file(RSU_OSAL_CHAR *name)
 		return -EPERM;
 	}
 
-	RSU_LOG_INF("read size is %d", ret);
+	RSU_LOG_DBG("read size is %d", ret);
 	calc_crc = rsu_crc32(0, (RSU_OSAL_VOID *)cpb_data, CPB_SIZE);
 	rsu_fseek(CPB_SIZE, RSU_SEEK_SET, fp);
 	ret = rsu_read(&crc_from_saved_file, sizeof(crc_from_saved_file), fp);
@@ -1646,7 +1646,7 @@ static RSU_OSAL_INT restore_cpb_from_file(RSU_OSAL_CHAR *name)
 		rsu_close(fp);
 		return -EPERM;
 	}
-	RSU_LOG_INF("read size is %d", ret);
+	RSU_LOG_DBG("read size is %d", ret);
 
 	if (crc_from_saved_file != calc_crc) {
 		RSU_LOG_ERR("saved file is corrupted");
@@ -1905,7 +1905,7 @@ RSU_OSAL_INT rsu_qspi_open(struct librsu_ll_intf *intf, struct librsu_hl_intf **
 		return -ENOMEM;
 	}
 
-	RSU_LOG_INF("opening qspi flash and access spt and cpb tables");
+	RSU_LOG_DBG("opening qspi flash and access spt and cpb tables");
 
 	RSU_OSAL_INT ret;
 
@@ -1918,8 +1918,8 @@ RSU_OSAL_INT rsu_qspi_open(struct librsu_ll_intf *intf, struct librsu_hl_intf **
 		return -ENODEV;
 	}
 
-	RSU_LOG_INF("SPT0 address is 0x%llx", plat_database->spt_addr.spt0_address);
-	RSU_LOG_INF("SPT1 address is 0x%llx", plat_database->spt_addr.spt1_address);
+	RSU_LOG_DBG("SPT0 offset is 0x%llx", plat_database->spt_addr.spt0_address);
+	RSU_LOG_DBG("SPT1 offset is 0x%llx", plat_database->spt_addr.spt1_address);
 
 	if (load_spt() && !plat_database->spt_corrupted) {
 		RSU_LOG_ERR("error: Bad SPT");
@@ -1935,7 +1935,7 @@ RSU_OSAL_INT rsu_qspi_open(struct librsu_ll_intf *intf, struct librsu_hl_intf **
 		return -EFAULT;
 	}
 
-	RSU_LOG_INF("finished reading qspi flash");
+	RSU_LOG_DBG("finished reading qspi flash");
 
 	*hl_ptr = &hl_intf;
 

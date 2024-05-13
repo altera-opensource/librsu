@@ -102,6 +102,8 @@ RSU_OSAL_INT librsu_cfg_parse(RSU_OSAL_CHAR *filename, struct librsu_hl_intf **i
 		RSU_LOG_ERR("error in setting common configuration");
 	}
 
+	RSU_LOG_DBG("Platform initialization completed");
+
 	ret = rsu_qspi_open(hal, intf);
 	if (ret) {
 		RSU_LOG_ERR("Error in opening RSU in qspi %d", ret);
@@ -135,6 +137,12 @@ RSU_OSAL_INT librsu_common_cfg_parse(RSU_OSAL_CHAR *filename, struct librsu_ll_i
 	while (intf->file.fgets(line, 128, file) == 0) {
 		linenum++;
 		argc = split_line(line, argv, NUM_ARGS);
+
+		if (argc < 1)
+			continue;
+
+		if (argv[0][0] == '#')
+			continue;
 
 		if (strcmp(argv[0], "write-protect") == 0) {
 			if (argc != 2) {

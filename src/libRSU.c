@@ -72,7 +72,7 @@ RSU_OSAL_INT librsu_init(RSU_OSAL_CHAR *filename)
 	}
 
 	ctx.state = initialized;
-	RSU_LOG_INF("libRSU initialization completed");
+	RSU_LOG_DBG("libRSU initialization completed \n");
 
 	return 0;
 }
@@ -471,7 +471,7 @@ RSU_OSAL_INT rsu_slot_program_buf(RSU_OSAL_INT slot, RSU_OSAL_VOID *buf, RSU_OSA
 	}
 
 	if (librsu_cb_buf_init(buf, size)) {
-		RSU_LOG_INF("Bad buf/size arguments");
+		RSU_LOG_ERR("Bad buf/size arguments");
 		MUTEX_UNLOCK();
 		return -EARGS;
 	}
@@ -1495,7 +1495,7 @@ RSU_OSAL_INT rsu_running_factory(RSU_OSAL_INT *factory)
 		return -EFILEIO;
 	}
 
-	RSU_LOG_INF("factory offset is 0x%08llx and current image is 0x%08llx", factory_offset,
+	RSU_LOG_INF("factory offset is 0x%08llx and current image is 0x%08llx\n", factory_offset,
 		    data.current_image);
 	*factory = ((factory_offset == data.current_image) ? 1 : 0);
 
