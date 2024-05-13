@@ -20,7 +20,7 @@ FetchContent_MakeAvailable(googletest)
 FetchContent_Declare(
   zlib
   GIT_REPOSITORY https://github.com/madler/zlib.git
-  GIT_TAG v1.3
+  GIT_TAG v1.3.1
 )
 
 FetchContent_MakeAvailable(zlib)

@@ -47,6 +47,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_C_STANDARD 11)
 
 add_library(uniLibRSU ${LIBRARY_TYPE} "")
+set_target_properties(uniLibRSU PROPERTIES VERSION ${PROJECT_VERSION})
 
 add_subdirectory(platform)
 
@@ -64,4 +65,8 @@ set_property(GLOBAL PROPERTY CTEST_TARGETS_ADDED 1)
 if(UNIT_TEST)
     enable_testing()
     add_subdirectory(unit-test)
+endif()
+
+if(PLATFORM STREQUAL linux-aarch64)
+    add_subdirectory(linux-example)
 endif()
