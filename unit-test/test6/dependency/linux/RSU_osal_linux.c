@@ -19,7 +19,7 @@ RSU_OSAL_VOID rsu_free(RSU_OSAL_VOID *ptr)
 	free(ptr);
 }
 
-RSU_OSAL_VOID *rsu_memset(RSU_OSAL_VOID *s, RSU_OSAL_U32 c, RSU_OSAL_SIZE n)
+RSU_OSAL_VOID *rsu_memset(RSU_OSAL_VOID *s, RSU_OSAL_U8 c, RSU_OSAL_SIZE n)
 {
 	return memset(s, c, n);
 }

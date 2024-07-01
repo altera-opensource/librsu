@@ -53,7 +53,7 @@ RSU_OSAL_VOID rsu_free(RSU_OSAL_VOID *ptr);
  * @param[in] n size of memory region.
  * @return pointer to memory area.
  */
-RSU_OSAL_VOID *rsu_memset(RSU_OSAL_VOID *s, RSU_OSAL_U32 c, RSU_OSAL_SIZE n);
+RSU_OSAL_VOID *rsu_memset(RSU_OSAL_VOID *s, RSU_OSAL_U8 c, RSU_OSAL_SIZE n);
 
 /**
  * @brief copy from one memory location to another
