@@ -98,11 +98,11 @@ RSU_OSAL_INT plat_filesys_fseek_mock(RSU_OSAL_OFFSET offset, RSU_filesys_whence_
 
 	RSU_OSAL_INT ret = 0;
 	if (whence == RSU_SEEK_SET) {
-		ret = fseek(file, SEEK_SET, offset);
+		ret = fseek(file, offset, SEEK_SET);
 	} else if (whence == RSU_SEEK_CUR) {
-		ret = fseek(file, SEEK_CUR, offset);
+		ret = fseek(file, offset, SEEK_CUR);
 	} else if (whence == RSU_SEEK_END) {
-		ret = fseek(file, SEEK_END, offset);
+		ret = fseek(file, offset, SEEK_END);
 	} else {
 		RSU_LOG_ERR("invalid whence %d\n", whence);
 		return -EINVAL;

@@ -49,7 +49,7 @@ RSU_OSAL_INT plat_filesys_read(RSU_OSAL_VOID *buf, RSU_OSAL_SIZE len, RSU_OSAL_F
 		return -EINVAL;
 	}
 
-	RSU_OSAL_INT ret = fread(buf, len, 1, file);
+	RSU_OSAL_INT ret = fread(buf, 1, len, file);
 	if (ret < 0) {
 		RSU_LOG_ERR("error in reading the file %d", errno);
 	}
@@ -62,7 +62,7 @@ RSU_OSAL_INT plat_filesys_write(RSU_OSAL_VOID *buf, RSU_OSAL_SIZE len, RSU_OSAL_
 		return -EINVAL;
 	}
 
-	RSU_OSAL_INT ret = fwrite(buf, len, 1, file);
+	RSU_OSAL_INT ret = fwrite(buf, 1, len, file);
 	if (ret < 0) {
 		RSU_LOG_ERR("error in writing to file %d", errno);
 	}
@@ -96,18 +96,18 @@ RSU_OSAL_INT plat_filesys_fseek(RSU_OSAL_OFFSET offset, RSU_filesys_whence_t whe
 
 	RSU_OSAL_INT ret = 0;
 	if (whence == RSU_SEEK_SET) {
-		ret = fseek(file, SEEK_SET, offset);
+		ret = fseek(file, offset, SEEK_SET);
 	} else if (whence == RSU_SEEK_CUR) {
-		ret = fseek(file, SEEK_CUR, offset);
+		ret = fseek(file, offset, SEEK_CUR);
 	} else if (whence == RSU_SEEK_END) {
-		ret = fseek(file, SEEK_END, offset);
+		ret = fseek(file, offset, SEEK_END);
 	} else {
 		RSU_LOG_ERR("invalid whence %d\n", whence);
 		return -EINVAL;
 	}
 
 	if (errno) {
-		RSU_LOG_ERR("error in fseek");
+		RSU_LOG_ERR("error in fseek : %s",strerror(errno));
 	}
 
 	return ret;
