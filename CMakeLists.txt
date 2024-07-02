@@ -23,9 +23,9 @@ include(cmake/doxygen.cmake)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option(UNIT_TEST "Enable Unit testing of libRSU" OFF)
-option(SHARED_LIB "Enable building of shared library" OFF)
+option(NEED_STATIC_LIB "Override building of library as static" OFF)
 
-if(${PLATFORM} STREQUAL host AND UNIT_TEST EQUAL ON)
+if(${PLATFORM} STREQUAL host AND UNIT_TEST)
     set(BUILD_DOC OFF)
 endif()
 
@@ -33,13 +33,13 @@ if(COVERAGE)
   add_lcov_coverage(IGNORE *unit-test*)
 endif()
 
-if(SHARED_LIB)
+if(SHARED_LIB AND NOT NEED_STATIC_LIB)
   set(LIBRARY_TYPE SHARED)
 else()
   set(LIBRARY_TYPE STATIC)
 endif()
 
-if (NOT CMAKE_BUILD_TYPE)
+if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif ()
 
