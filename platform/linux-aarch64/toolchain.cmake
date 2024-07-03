@@ -13,3 +13,5 @@ if (NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 
     set(CMAKE_TOOLCHAIN_FILE    ${CMAKE_CURRENT_LIST_DIR}/${TOOLCHAIN}.cmake)
 endif ()
+
+add_compile_options(-Wall -Wextra -Wpedantic)

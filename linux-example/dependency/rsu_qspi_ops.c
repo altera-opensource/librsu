@@ -21,12 +21,12 @@
 
 static int dev_file = -1;
 static struct mtd_info_user dev_info;
-static char qspi_file[RSU_DEV_BUF_SIZE] = DEVICE;
+static char qspi_file[RSU_DEV_BUF_SIZE + 1] = DEVICE;
 
 RSU_OSAL_INT plat_qspi_read(RSU_OSAL_OFFSET offset, RSU_OSAL_VOID *data, RSU_OSAL_SIZE len)
 {
-	RSU_LOG_DBG("received read qspi");
-	int cnt = 0;
+	RSU_LOG_DBG("received read qspi at offset 0x08%jx having %lu length\n", offset, len);
+	RSU_OSAL_U32 cnt = 0;
 	char *ptr = data;
 	int rtn;
 
@@ -55,9 +55,9 @@ RSU_OSAL_INT plat_qspi_read(RSU_OSAL_OFFSET offset, RSU_OSAL_VOID *data, RSU_OSA
 
 RSU_OSAL_INT plat_qspi_write(RSU_OSAL_OFFSET offset, const RSU_OSAL_VOID *data, RSU_OSAL_SIZE len)
 {
-	RSU_LOG_DBG("received write qspi");
+	RSU_LOG_DBG("received write qspi at offset 0x08%jx having %lu length\n", offset, len);
 
-	int cnt = 0;
+	RSU_OSAL_U32 cnt = 0;
 	char *ptr = (char *)data;
 	int rtn;
 
@@ -89,7 +89,7 @@ RSU_OSAL_INT plat_qspi_erase(RSU_OSAL_OFFSET offset, RSU_OSAL_SIZE len)
 	struct erase_info_user erase;
 	int rtn;
 
-	RSU_LOG_DBG("received erase info ");
+	RSU_LOG_DBG("received erase at offset 0x08%jx having %lu length\n", offset, len);
 
 	if (dev_file < 0) {
 		return -EIO;

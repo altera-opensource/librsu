@@ -76,7 +76,7 @@ RSU_OSAL_INT plat_filesys_fgets_mock(RSU_OSAL_CHAR *str, RSU_OSAL_SIZE len, RSU_
 	if (str == NULL || len == 0 || file == NULL) {
 		return -EINVAL;
 	}
-	RSU_OSAL_INT ret = 0;
+
 	RSU_OSAL_CHAR *ptr;
 	errno = 0;
 	ptr = fgets(str, len, file);

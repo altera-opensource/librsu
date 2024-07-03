@@ -74,7 +74,7 @@ RSU_OSAL_INT plat_filesys_fgets(RSU_OSAL_CHAR *str, RSU_OSAL_SIZE len, RSU_OSAL_
 	if (str == NULL || len == 0 || file == NULL) {
 		return -EINVAL;
 	}
-	RSU_OSAL_INT ret = 0;
+
 	RSU_OSAL_CHAR *ptr;
 	errno = 0;
 	ptr = fgets(str, len, file);
@@ -88,7 +88,7 @@ RSU_OSAL_INT plat_filesys_fgets(RSU_OSAL_CHAR *str, RSU_OSAL_SIZE len, RSU_OSAL_
 }
 
 RSU_OSAL_INT plat_filesys_fseek(RSU_OSAL_OFFSET offset, RSU_filesys_whence_t whence,
-				     RSU_OSAL_FILE *file)
+				RSU_OSAL_FILE *file)
 {
 	if (!file) {
 		return -EINVAL;
@@ -107,7 +107,7 @@ RSU_OSAL_INT plat_filesys_fseek(RSU_OSAL_OFFSET offset, RSU_filesys_whence_t whe
 	}
 
 	if (errno) {
-		RSU_LOG_ERR("error in fseek : %s",strerror(errno));
+		RSU_LOG_ERR("error in fseek : %s", strerror(errno));
 	}
 
 	return ret;

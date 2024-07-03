@@ -10,7 +10,7 @@
 #include <utils/RSU_utils.h>
 #include <string.h>
 
-static RSU_OSAL_CHAR rsu_dev_local[RSU_DEV_BUF_SIZE] = DEFAULT_RSU_DEV;
+static RSU_OSAL_CHAR rsu_dev_local[RSU_DEV_BUF_SIZE + 1] = DEFAULT_RSU_DEV;
 
 RSU_OSAL_INT rsu_get_dcmf_status(struct rsu_dcmf_status *data)
 {

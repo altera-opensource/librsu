@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static RSU_OSAL_CHAR rsu_dev_local[RSU_DEV_BUF_SIZE] = DEFAULT_RSU_DEV;
+static RSU_OSAL_CHAR rsu_dev_local[RSU_DEV_BUF_SIZE + 1] = DEFAULT_RSU_DEV;
 
 
 RSU_OSAL_INT plat_mbox_get_rsu_status(struct mbox_status_info *data)

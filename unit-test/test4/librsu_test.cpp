@@ -319,7 +319,7 @@ TEST(librsu_test, rsu_running_factory)
 TEST(librsu_test, rsu_slot_load_factory_after_reboot)
 {
 	int ret = 0;
-	RSU_OSAL_U8 retry;
+
 	ret = librsu_init((RSU_OSAL_CHAR *)"librsu_config.rc");
 	ASSERT_EQ(ret, 0);
 
@@ -334,7 +334,7 @@ TEST(librsu_test, rsu_slot_load_factory_after_reboot)
 TEST(librsu_test, rsu_slot_load_after_reboot)
 {
 	int ret = 0;
-	RSU_OSAL_U8 retry;
+
 	ret = librsu_init((RSU_OSAL_CHAR *)"librsu_config.rc");
 	ret = rsu_slot_load_factory_after_reboot();
 	ASSERT_EQ(ret, 0);

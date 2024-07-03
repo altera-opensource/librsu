@@ -38,7 +38,7 @@ RSU_OSAL_INT plat_qspi_read_mock(RSU_OSAL_OFFSET offset, RSU_OSAL_VOID *data, RS
     offset +=0x310000; //mocking how linux offsets to spt0 top address
     RSU_LOG_DBG("received read qspi");
     FILE* qspi_file = fopen(RPD_FILE_TEST_NAME, "rb+");
-    uint8_t *ptr = (uint8_t *)malloc(len);
+    RSU_OSAL_CHAR *ptr = (RSU_OSAL_CHAR *)malloc(len);
     if (ptr == NULL) {
         return -ENOMEM;
     }
@@ -62,8 +62,8 @@ RSU_OSAL_INT plat_qspi_write_mock(RSU_OSAL_OFFSET offset, const RSU_OSAL_VOID *d
     offset +=0x310000; //mocking how linux offsets to spt0 top address
     RSU_LOG_DBG("received write qspi");
     FILE *qspi_file = fopen(RPD_FILE_TEST_NAME, "rb+");
-    uint8_t *ptr_data = (uint8_t *)data;
-    uint8_t *ptr = (uint8_t *)malloc(len);
+    RSU_OSAL_CHAR *ptr_data = (RSU_OSAL_CHAR *)data;
+    RSU_OSAL_CHAR *ptr = (RSU_OSAL_CHAR *)malloc(len);
     if (ptr == NULL) {
         return -ENOMEM;
     }

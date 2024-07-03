@@ -24,6 +24,7 @@ RSU_OSAL_INT plat_mbox_get_rsu_status_mock(struct mbox_status_info *data)
 /* Mocking function for send_rsu_update */
 RSU_OSAL_INT plat_mbox_send_rsu_update_mock(RSU_OSAL_U64 addr)
 {
+	ARG_UNUSED(addr);
 	return 0;
 }
 
@@ -41,6 +42,7 @@ RSU_OSAL_INT plat_mbox_get_spt_addresses_mock(struct mbox_data_rsu_spt_address *
 /* Mocking function for rsu_notify */
 RSU_OSAL_INT plat_mbox_rsu_notify_mock(RSU_OSAL_U32 notify)
 {
+	ARG_UNUSED(notify);
 	return 0;
 }
 
