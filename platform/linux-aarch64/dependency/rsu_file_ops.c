@@ -12,7 +12,7 @@
 #include <errno.h>
 #include <unistd.h>
 
-RSU_OSAL_FILE *plat_filesys_open(RSU_OSAL_CHAR *filename, RSU_filesys_flags_t flag)
+static RSU_OSAL_FILE *plat_filesys_open(RSU_OSAL_CHAR *filename, RSU_filesys_flags_t flag)
 {
 	if (!filename) {
 		RSU_LOG_ERR("invalid argument\n");
@@ -42,7 +42,7 @@ RSU_OSAL_FILE *plat_filesys_open(RSU_OSAL_CHAR *filename, RSU_filesys_flags_t fl
 	return file;
 }
 
-RSU_OSAL_INT plat_filesys_read(RSU_OSAL_VOID *buf, RSU_OSAL_SIZE len, RSU_OSAL_FILE *file)
+static RSU_OSAL_INT plat_filesys_read(RSU_OSAL_VOID *buf, RSU_OSAL_SIZE len, RSU_OSAL_FILE *file)
 {
 
 	if (!buf || len <= 0 || !file) {
@@ -56,7 +56,7 @@ RSU_OSAL_INT plat_filesys_read(RSU_OSAL_VOID *buf, RSU_OSAL_SIZE len, RSU_OSAL_F
 	return ret;
 }
 
-RSU_OSAL_INT plat_filesys_write(RSU_OSAL_VOID *buf, RSU_OSAL_SIZE len, RSU_OSAL_FILE *file)
+static RSU_OSAL_INT plat_filesys_write(RSU_OSAL_VOID *buf, RSU_OSAL_SIZE len, RSU_OSAL_FILE *file)
 {
 	if (!buf || len <= 0 || !file) {
 		return -EINVAL;
@@ -69,7 +69,7 @@ RSU_OSAL_INT plat_filesys_write(RSU_OSAL_VOID *buf, RSU_OSAL_SIZE len, RSU_OSAL_
 	return ret;
 }
 
-RSU_OSAL_INT plat_filesys_fgets(RSU_OSAL_CHAR *str, RSU_OSAL_SIZE len, RSU_OSAL_FILE *file)
+static RSU_OSAL_INT plat_filesys_fgets(RSU_OSAL_CHAR *str, RSU_OSAL_SIZE len, RSU_OSAL_FILE *file)
 {
 	if (str == NULL || len == 0 || file == NULL) {
 		return -EINVAL;
@@ -87,7 +87,7 @@ RSU_OSAL_INT plat_filesys_fgets(RSU_OSAL_CHAR *str, RSU_OSAL_SIZE len, RSU_OSAL_
 	}
 }
 
-RSU_OSAL_INT plat_filesys_fseek(RSU_OSAL_OFFSET offset, RSU_filesys_whence_t whence,
+static RSU_OSAL_INT plat_filesys_fseek(RSU_OSAL_OFFSET offset, RSU_filesys_whence_t whence,
 				RSU_OSAL_FILE *file)
 {
 	if (!file) {
@@ -113,7 +113,7 @@ RSU_OSAL_INT plat_filesys_fseek(RSU_OSAL_OFFSET offset, RSU_filesys_whence_t whe
 	return ret;
 }
 
-RSU_OSAL_INT plat_filesys_ftruncate(RSU_OSAL_OFFSET length, RSU_OSAL_FILE *file)
+static RSU_OSAL_INT plat_filesys_ftruncate(RSU_OSAL_OFFSET length, RSU_OSAL_FILE *file)
 {
 	if (!file) {
 		return -EINVAL;
@@ -126,7 +126,7 @@ RSU_OSAL_INT plat_filesys_ftruncate(RSU_OSAL_OFFSET length, RSU_OSAL_FILE *file)
 	return ret;
 }
 
-RSU_OSAL_INT plat_filesys_close(RSU_OSAL_FILE *file)
+static RSU_OSAL_INT plat_filesys_close(RSU_OSAL_FILE *file)
 {
 	if (!file) {
 		return -EINVAL;
@@ -139,7 +139,7 @@ RSU_OSAL_INT plat_filesys_close(RSU_OSAL_FILE *file)
 	return ret;
 }
 
-RSU_OSAL_INT plat_filesys_terminate(RSU_OSAL_VOID)
+static RSU_OSAL_INT plat_filesys_terminate(RSU_OSAL_VOID)
 {
 	return 0;
 }

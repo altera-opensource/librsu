@@ -3,5 +3,5 @@
 
 set(OSAL_PLATFORM zephyr PARENT_SCOPE)
 
-target_include_directories(uniLibRSU PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 target_link_libraries(uniLibRSU PUBLIC zephyr_interface)
+target_include_directories(uniLibRSU PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../platform_include")

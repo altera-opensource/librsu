@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: MIT-0
 # Copyright (C) 2023-2024 Intel Corporation
 
-cmake_minimum_required(VERSION 3.20)
 
 configure_file (
   "${CMAKE_CURRENT_SOURCE_DIR}/version.c.in"

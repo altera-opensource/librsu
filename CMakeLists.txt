@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: MIT-0
 # Copyright (C) 2023-2024 Intel Corporation
 
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.24)
+
+include(CMakePackageConfigHelpers)
 
 include(cmake/platform.cmake)
 include(cmake/coverage.cmake)
@@ -10,7 +12,7 @@ include(cmake/checkGit.cmake)
 get_git_commit()
 
 project(uniLibRSU
-        VERSION 0.9
+        VERSION 1.0
         LANGUAGES ASM C CXX
         DESCRIPTION "unified Remote System Update for Agilex platform")
 
@@ -47,7 +49,13 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_C_STANDARD 11)
 
 add_library(uniLibRSU ${LIBRARY_TYPE} "")
-set_target_properties(uniLibRSU PROPERTIES VERSION ${PROJECT_VERSION})
+set_target_properties(uniLibRSU PROPERTIES
+                      VERSION ${PROJECT_VERSION_MAJOR}
+                      SOVERSION ${PROJECT_VERSION_MAJOR})
+
+write_basic_package_version_file(unifiedLibRSUVersion.cmake
+                                  VERSION ${PROJECT_VERSION}
+                                  COMPATIBILITY SameMajorVersion)
 
 add_subdirectory(platform)
 
@@ -63,10 +71,36 @@ set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 set_property(GLOBAL PROPERTY CTEST_TARGETS_ADDED 1)
 
 if(UNIT_TEST)
-    enable_testing()
-    add_subdirectory(unit-test)
+  enable_testing()
+  add_subdirectory(unit-test)
 endif()
 
 if(PLATFORM STREQUAL linux-aarch64)
-    add_subdirectory(linux-example)
+  add_subdirectory(linux-example)
+
+  install(TARGETS uniLibRSU
+  LIBRARY
+    DESTINATION usr/lib
+    COMPONENT uniLibRSU_lib_Development
+  PUBLIC_HEADER
+    DESTINATION include
+    COMPONENT uniLibRSU_lib_Development
+  ARCHIVE
+    DESTINATION usr/lib
+    COMPONENT uniLibRSU_lib_Development
+  )
+
+  install(TARGETS uniLibRSU
+  LIBRARY
+    DESTINATION usr/lib
+    COMPONENT uniLibRSU_lib_Runtime
+    NAMELINK_SKIP
+  ARCHIVE
+    DESTINATION usr/lib
+    COMPONENT uniLibRSU_lib_Runtime
+  PUBLIC_HEADER
+    DESTINATION include
+    COMPONENT uniLibRSU_lib_Runtime
+  )
+
 endif()

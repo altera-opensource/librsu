@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT-0
 # Copyright (C) 2023-2024 Intel Corporation
 
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.24)
 add_executable(librsu_test4 librsu_test.cpp)
 
 add_subdirectory(dependency)

@@ -12,7 +12,7 @@
 
 static RSU_OSAL_CHAR rsu_dev_local[RSU_DEV_BUF_SIZE + 1] = DEFAULT_RSU_DEV;
 
-RSU_OSAL_INT rsu_get_dcmf_status(struct rsu_dcmf_status *data)
+static RSU_OSAL_INT rsu_get_dcmf_status(struct rsu_dcmf_status *data)
 {
 	if (data == NULL) {
 		return -EINVAL;
@@ -52,7 +52,7 @@ RSU_OSAL_INT rsu_get_dcmf_status(struct rsu_dcmf_status *data)
 	return 0;
 }
 
-RSU_OSAL_INT rsu_get_max_retry_count(RSU_OSAL_U8 *rsu_max_retry)
+static RSU_OSAL_INT rsu_get_max_retry_count(RSU_OSAL_U8 *rsu_max_retry)
 {
 	if (rsu_max_retry == NULL) {
 		return -EINVAL;
@@ -75,7 +75,7 @@ RSU_OSAL_INT rsu_get_max_retry_count(RSU_OSAL_U8 *rsu_max_retry)
 	return 0;
 }
 
-RSU_OSAL_INT rsu_get_dcmf_version(struct rsu_dcmf_version *version)
+static RSU_OSAL_INT rsu_get_dcmf_version(struct rsu_dcmf_version *version)
 {
 	if (version == NULL) {
 		return -EINVAL;
@@ -115,7 +115,7 @@ RSU_OSAL_INT rsu_get_dcmf_version(struct rsu_dcmf_version *version)
 	return 0;
 }
 
-RSU_OSAL_INT terminate(RSU_OSAL_VOID)
+static RSU_OSAL_INT terminate(RSU_OSAL_VOID)
 {
 	strncpy(rsu_dev_local, DEFAULT_RSU_DEV, RSU_DEV_BUF_SIZE);
 	return 0;

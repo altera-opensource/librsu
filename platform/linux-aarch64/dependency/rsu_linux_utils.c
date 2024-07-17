@@ -59,7 +59,7 @@ RSU_OSAL_INT put_devattr(const RSU_OSAL_CHAR *rsu_dev, const RSU_OSAL_CHAR *attr
 		return -EBADF;
 	}
 
-	snprintf(buf, size, "%lli", value);
+	snprintf(buf, size, "%llu", value);
 
 	if (fputs(buf, attr_file) > 0) {
 		fclose(attr_file);

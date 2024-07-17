@@ -15,3 +15,5 @@ target_compile_options(uniLibRSU PRIVATE -Wall -Wextra  -Wextra -Wno-unused-para
   -Wno-missing-field-initializer -Wmissing-prototypes -Wstrict-prototypes -Wold-style-definition -Wshadow
   -Wpointer-arith -Wcast-qual
 )
+
+target_include_directories(uniLibRSU PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../platform_include")

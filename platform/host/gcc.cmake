@@ -12,8 +12,8 @@ set(CMAKE_SIZE                      size${CMAKE_EXECUTABLE_SUFFIX} CACHE INTERNA
 set(CMAKE_STRIP                     strip${CMAKE_EXECUTABLE_SUFFIX} CACHE INTERNAL "")
 set(CMAKE_GCOV                      gcov${CMAKE_EXECUTABLE_SUFFIX} CACHE INTERNAL "")
 
-set(CMAKE_C_FLAGS                   "${APP_C_FLAGS} -Wno-psabi" CACHE INTERNAL "")
-set(CMAKE_CXX_FLAGS                 "${APP_CXX_FLAGS} ${CMAKE_C_FLAGS}" CACHE INTERNAL "")
+set(CMAKE_C_FLAGS                   "${CMAKE_C_FLAGS} -Wno-psabi" CACHE INTERNAL "")
+set(CMAKE_CXX_FLAGS                 "${CMAKE_CXX_FLAGS} ${CMAKE_C_FLAGS}" CACHE INTERNAL "")
 
 set(CMAKE_C_FLAGS_DEBUG             "-O0 -g3" CACHE INTERNAL "")
 set(CMAKE_C_FLAGS_RELEASE           "-O2 -DNDEBUG" CACHE INTERNAL "")

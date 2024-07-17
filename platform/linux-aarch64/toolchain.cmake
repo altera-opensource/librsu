@@ -11,7 +11,10 @@ if (NOT DEFINED CMAKE_TOOLCHAIN_FILE)
         set(TOOLCHAIN           ${DEFAULT_TOOLCHAIN})
     endif ()
 
-    set(CMAKE_TOOLCHAIN_FILE    ${CMAKE_CURRENT_LIST_DIR}/${TOOLCHAIN}.cmake)
+    if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+      message("-- Setting tool chain from platform for linux-aarch64")
+      set(CMAKE_TOOLCHAIN_FILE    ${CMAKE_CURRENT_LIST_DIR}/${TOOLCHAIN}.cmake)
+    endif()
 endif ()
 
 add_compile_options(-Wall -Wextra -Wpedantic)

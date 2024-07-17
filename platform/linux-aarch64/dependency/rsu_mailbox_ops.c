@@ -15,7 +15,7 @@
 static RSU_OSAL_CHAR rsu_dev_local[RSU_DEV_BUF_SIZE + 1] = DEFAULT_RSU_DEV;
 
 
-RSU_OSAL_INT plat_mbox_get_rsu_status(struct mbox_status_info *data)
+static RSU_OSAL_INT plat_mbox_get_rsu_status(struct mbox_status_info *data)
 {
 	if(data == NULL){
 		return -EINVAL;
@@ -62,7 +62,7 @@ RSU_OSAL_INT plat_mbox_get_rsu_status(struct mbox_status_info *data)
 }
 
 
-RSU_OSAL_INT plat_mbox_send_rsu_update(RSU_OSAL_U64 addr)
+static RSU_OSAL_INT plat_mbox_send_rsu_update(RSU_OSAL_U64 addr)
 {
 	RSU_OSAL_INT ret = 0;
 
@@ -73,7 +73,7 @@ RSU_OSAL_INT plat_mbox_send_rsu_update(RSU_OSAL_U64 addr)
 	return 0;
 }
 
-RSU_OSAL_INT plat_mbox_get_spt_addresses(struct mbox_data_rsu_spt_address *data)
+static RSU_OSAL_INT plat_mbox_get_spt_addresses(struct mbox_data_rsu_spt_address *data)
 {
 	if (data == NULL) {
 		return -EINVAL;
@@ -98,7 +98,7 @@ RSU_OSAL_INT plat_mbox_get_spt_addresses(struct mbox_data_rsu_spt_address *data)
 	return 0;
 }
 
-RSU_OSAL_INT plat_mbox_rsu_notify(RSU_OSAL_U32 notify)
+static RSU_OSAL_INT plat_mbox_rsu_notify(RSU_OSAL_U32 notify)
 {
 	RSU_OSAL_INT ret = 0;
 
@@ -110,7 +110,7 @@ RSU_OSAL_INT plat_mbox_rsu_notify(RSU_OSAL_U32 notify)
 	return 0;
 }
 
-RSU_OSAL_INT plat_mbox_terminate(RSU_OSAL_VOID)
+static RSU_OSAL_INT plat_mbox_terminate(RSU_OSAL_VOID)
 {
 	strncpy(rsu_dev_local, DEFAULT_RSU_DEV, RSU_DEV_BUF_SIZE);
 	return 0;

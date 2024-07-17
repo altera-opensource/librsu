@@ -1,16 +1,33 @@
 # SPDX-License-Identifier: MIT-0
 # Copyright (C) 2023-2024 Intel Corporation
 
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.24)
 
 add_executable(rsu_client rsu_client.c)
 
-add_subdirectory(dependency)
-find_package( Threads REQUIRED )
+find_package(Threads REQUIRED)
 
 target_link_libraries(
   rsu_client
   PRIVATE
   uniLibRSU
   ${CMAKE_THREAD_LIBS_INIT}
+)
+
+set_target_properties(rsu_client PROPERTIES
+  ARCHIVE_OUTPUT_DIRECTORY    "${CMAKE_BINARY_DIR}/lib"
+  LIBRARY_OUTPUT_DIRECTORY    "${CMAKE_BINARY_DIR}/lib"
+  RUNTIME_OUTPUT_DIRECTORY    "${CMAKE_BINARY_DIR}/bin"
+)
+
+install(
+  FILES ${CMAKE_CURRENT_SOURCE_DIR}/qspi.rc
+    DESTINATION etc/
+    COMPONENT uniLibRSU_client_Runtime_GSRD
+)
+
+install(TARGETS rsu_client
+  RUNTIME
+    DESTINATION home/root
+    COMPONENT uniLibRSU_client_Runtime_GSRD
 )
