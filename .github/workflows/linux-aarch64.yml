@@ -38,3 +38,30 @@ jobs:
             cmake -S ${{github.workspace}}/work/librsu -B ${{github.workspace}}/work/build -DPLATFORM=linux-aarch64 -G"Ninja"
             cmake --build ${{github.workspace}}/work/build
 
+      - name: deploy library
+        uses: intel-innersource/frameworks.actions.fpga.ci.arc@v1.0
+        with:
+          resources: |
+            arm_gnu/linaro/aarch64/9.2
+            cmake/3.24.0
+            ninja/1.10.2
+          script: |
+            set -ex
+            cmake --install ${{github.workspace}}/work/build --prefix=${{github.workspace}}/work/deploy -v --component uniLibRSU_lib_Runtime
+            test -f "${{github.workspace}}/work/deploy/usr/lib/libuniLibRSU.so.$(cat ${{github.workspace}}/work/build/CMakeCache.txt  | grep CMAKE_PROJECT_VERSION_MAJOR |  cut -d "=" -f2)"
+            test -f "${{github.workspace}}/work/deploy/include/RSU_OSAL_types.h"
+            test -f "${{github.workspace}}/work/deploy/include/libRSU.h"
+            test -f "${{github.workspace}}/work/deploy/include/libRSU_OSAL.h"
+
+      - name: deploy client application
+        uses: intel-innersource/frameworks.actions.fpga.ci.arc@v1.0
+        with:
+          resources: |
+            arm_gnu/linaro/aarch64/9.2
+            cmake/3.24.0
+            ninja/1.10.2
+          script: |
+            set -ex
+            cmake --install ${{github.workspace}}/work/build --prefix=${{github.workspace}}/work/deploy -v --component uniLibRSU_client_Runtime_GSRD
+            test -x "${{github.workspace}}/work/deploy/home/root/rsu_client"
+            test -f "${{github.workspace}}/work/deploy/etc/qspi.rc"
