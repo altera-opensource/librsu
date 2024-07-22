@@ -3,7 +3,7 @@
 
 set(OSAL_PLATFORM linux PARENT_SCOPE)
 
-target_include_directories(uniLibRSU PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
+target_include_directories(uniLibRSU PUBLIC "include/")
 
 set_target_properties(uniLibRSU PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY    "${CMAKE_BINARY_DIR}/lib"
@@ -16,4 +16,4 @@ target_compile_options(uniLibRSU PRIVATE -Wall -Wextra  -Wextra -Wno-unused-para
   -Wpointer-arith -Wcast-qual
 )
 
-target_include_directories(uniLibRSU PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../platform_include")
+target_include_directories(uniLibRSU PUBLIC "../platform_include")

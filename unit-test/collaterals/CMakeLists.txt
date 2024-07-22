@@ -8,15 +8,11 @@ add_custom_command( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/output_file_jic.rpd ${CMA
                     COMMAND cp -vf ${CMAKE_CURRENT_SOURCE_DIR}/bl2.hex ${CMAKE_CURRENT_BINARY_DIR}/
                     COMMAND cp -vf ${CMAKE_CURRENT_SOURCE_DIR}/fip.bin ${CMAKE_CURRENT_BINARY_DIR}/
                     COMMAND cp -vf ${CMAKE_CURRENT_SOURCE_DIR}/factory.sof ${CMAKE_CURRENT_BINARY_DIR}/
-                    COMMAND ${QUARTUS_PFG} -c factory_p1p2p3.pfg
-                    COMMAND rm -f factory_hps_auto.sof
                     COMMAND ${QUARTUS_PFG} -c factory.sof app1.rpd -o hps_path=./bl2.hex -o mode=ASX4 -o start_address=0x00000 -o bitswap=OFF
-                    COMMAND rm -f factory_hps_auto.sof
                     COMMAND ${QUARTUS_PFG} -c factory.sof app2.rpd -o hps_path=./bl2.hex -o mode=ASX4 -o start_address=0x5000000 -o bitswap=OFF
-                    COMMAND rm -f factory_hps_auto.sof
                     COMMAND ${QUARTUS_PFG} -c factory.sof app3.rpd -o hps_path=./bl2.hex -o mode=ASX4 -o bitswap=OFF
-                    COMMAND rm -f factory_hps_auto.sof
                     COMMAND ${QUARTUS_PFG} -c factory.sof factory_update.rpd -o hps_path=./bl2.hex -o mode=ASX4 -o bitswap=OFF
+                    COMMAND ${QUARTUS_PFG} -c factory_p1p2p3.pfg
                     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
                     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/factory_p1p2p3.pfg ${CMAKE_CURRENT_SOURCE_DIR}/bl2.hex ${CMAKE_CURRENT_SOURCE_DIR}/fip.bin ${CMAKE_CURRENT_SOURCE_DIR}/factory.sof
 )

@@ -3,13 +3,13 @@
 
 
 configure_file (
-  "${CMAKE_CURRENT_SOURCE_DIR}/version.c.in"
+  "version.c.in"
   "${PROJECT_BINARY_DIR}/version/version.c"
   @ONLY
 )
 
 configure_file (
-  "${CMAKE_CURRENT_SOURCE_DIR}/version.h.in"
+  "version.h.in"
   "${PROJECT_BINARY_DIR}/version/version.h"
   @ONLY
 )

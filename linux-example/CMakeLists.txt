@@ -21,7 +21,7 @@ set_target_properties(rsu_client PROPERTIES
 )
 
 install(
-  FILES ${CMAKE_CURRENT_SOURCE_DIR}/qspi.rc
+  FILES qspi.rc
     DESTINATION etc/
     COMPONENT uniLibRSU_client_Runtime_GSRD
 )

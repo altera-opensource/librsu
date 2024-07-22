@@ -14,6 +14,6 @@ target_compile_options(uniLibRSU PRIVATE -Wall -Wextra  -Wextra -Wno-unused-para
   -Wpointer-arith -Wcast-qual
 )
 
-target_include_directories(uniLibRSU PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../platform_include")
+target_include_directories(uniLibRSU PRIVATE "../platform_include")
 
 add_subdirectory(dependency)
