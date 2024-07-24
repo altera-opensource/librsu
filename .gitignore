@@ -12,3 +12,7 @@ _deps
 
 build*/
 .vscode/*
+html_output_dir/*
+coverity_scan.sh
+build.sh
+.vscode-ctags

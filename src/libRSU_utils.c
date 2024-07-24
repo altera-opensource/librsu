@@ -13,10 +13,14 @@
  *
  * Returns the number of words found
  */
-RSU_OSAL_INT split_line(RSU_OSAL_CHAR *line, RSU_OSAL_CHAR **words, RSU_OSAL_INT cnt)
+RSU_OSAL_U32 split_line(RSU_OSAL_CHAR *line, RSU_OSAL_CHAR **words, RSU_OSAL_U32 cnt)
 {
+	if(line == NULL || words == NULL || cnt == 0 ) {
+		return 0;
+	}
+
 	RSU_OSAL_CHAR *c = line;
-	RSU_OSAL_INT y = 0;
+	RSU_OSAL_U32 y = 0;
 
 	while ((*c != '\0') && (y < cnt)) {
 		/* Look for start of a word */

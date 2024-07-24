@@ -31,7 +31,7 @@ extern "C" {
  * @param cnt number of pointers in the words array
  * @return number of words found
  */
-RSU_OSAL_INT split_line(RSU_OSAL_CHAR *line, RSU_OSAL_CHAR **words, RSU_OSAL_INT cnt);
+RSU_OSAL_U32 split_line(RSU_OSAL_CHAR *line, RSU_OSAL_CHAR **words, RSU_OSAL_U32 cnt);
 
 #ifdef __cplusplus
 }

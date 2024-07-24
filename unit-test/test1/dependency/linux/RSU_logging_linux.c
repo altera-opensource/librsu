@@ -37,7 +37,7 @@ RSU_OSAL_INT RSU_logging_init(RSU_OSAL_CHAR* cfg_file)
     }
 
     RSU_OSAL_FILE *file;
-    RSU_OSAL_CHAR line[128], *argv[NUM_ARGS];
+    RSU_OSAL_CHAR line[128], *argv[NUM_ARGS] = {0};
     RSU_OSAL_INT argc;
     RSU_OSAL_U32 linenum;
 

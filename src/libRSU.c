@@ -323,6 +323,7 @@ RSU_OSAL_INT rsu_slot_get_info(RSU_OSAL_INT slot, struct rsu_slot_info *info)
 	ret = intf->partition.offset(part_num, &info->offset);
 	if (ret) {
 		RSU_LOG_ERR("Error in getting the partition offset : %d", ret);
+		MUTEX_UNLOCK();
 		return -EBADF;
 	}
 	info->size = intf->partition.size(part_num);

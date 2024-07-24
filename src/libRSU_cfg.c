@@ -10,7 +10,8 @@
 #include <libRSU_ops.h>
 #include <string.h>
 
-#define NUM_ARGS (16U)
+#define NUM_ARGS		(16U)
+#define RSU_DEV_BUF_SIZE	(128U)
 
 static struct librsu_ll_intf *hal;
 
@@ -121,7 +122,7 @@ RSU_OSAL_INT librsu_common_cfg_parse(RSU_OSAL_CHAR *filename, struct librsu_ll_i
 	}
 
 	RSU_OSAL_FILE *file;
-	RSU_OSAL_CHAR line[128], *argv[NUM_ARGS];
+	RSU_OSAL_CHAR line[RSU_DEV_BUF_SIZE], *argv[NUM_ARGS] = {0};
 	RSU_OSAL_INT argc, linenum;
 	RSU_OSAL_U32 slot;
 
@@ -134,7 +135,7 @@ RSU_OSAL_INT librsu_common_cfg_parse(RSU_OSAL_CHAR *filename, struct librsu_ll_i
 	}
 
 	linenum = 0;
-	while (intf->file.fgets(line, 128, file) == 0) {
+	while (intf->file.fgets(line, RSU_DEV_BUF_SIZE, file) == 0) {
 		linenum++;
 		argc = split_line(line, argv, NUM_ARGS);
 

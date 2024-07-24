@@ -64,7 +64,7 @@ RSU_OSAL_INT plat_filesys_write_mock(RSU_OSAL_VOID *buf, RSU_OSAL_SIZE len, RSU_
 		return -EINVAL;
 	}
 
-	RSU_OSAL_INT ret = fwrite(buf, len, 1, file);
+	RSU_OSAL_INT ret = fwrite(buf, 1, len, file);
 	if (ret < 0) {
 		RSU_LOG_ERR("error in writing to file %s", strerror(errno));
 	}

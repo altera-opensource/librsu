@@ -282,8 +282,8 @@ static RSU_OSAL_INT check_spt(RSU_OSAL_VOID)
 		}
 
 		RSU_LOG_DBG("offset=0x%016llx, length=0x%08x\n",
-			plat_database->spt->partition[x].offset,
-			plat_database->spt->partition[x].length);
+			    plat_database->spt->partition[x].offset,
+			    plat_database->spt->partition[x].length);
 
 		/* check if the partition is overlap */
 		RSU_OSAL_U64 s_start = plat_database->spt->partition[x].offset;
@@ -317,10 +317,10 @@ static RSU_OSAL_INT check_spt(RSU_OSAL_VOID)
 		}
 
 		RSU_LOG_DBG("%-16s %016llX - %016llX (%X)", plat_database->spt->partition[x].name,
-			plat_database->spt->partition[x].offset,
-			(plat_database->spt->partition[x].offset +
-			 plat_database->spt->partition[x].length - 1),
-			plat_database->spt->partition[x].flags);
+			    plat_database->spt->partition[x].offset,
+			    (plat_database->spt->partition[x].offset +
+			     plat_database->spt->partition[x].length - 1),
+			    plat_database->spt->partition[x].flags);
 
 		if (strncmp(plat_database->spt->partition[x].name, "SPT0",
 			    SPT_PARTITION_NAME_LENGTH) == 0) {
@@ -504,7 +504,7 @@ static RSU_OSAL_INT check_cpb(RSU_OSAL_VOID)
 			if (plat_database->cpb_slots[x] ==
 			    plat_database->spt->partition[y].offset) {
 				RSU_LOG_DBG("cpb_slots[%u] = %s", x,
-					plat_database->spt->partition[y].name);
+					    plat_database->spt->partition[y].name);
 				break;
 			}
 		}
@@ -633,7 +633,8 @@ static RSU_OSAL_INT load_cpb(RSU_OSAL_VOID)
 	}
 
 	if (read_part(plat_database->cpb1_part, 0, plat_database->cpb, CPB_BLOCK_SIZE) == 0 &&
-	    plat_database->cpb->header.magic_number == CPB_MAGIC_NUMBER) {
+	    plat_database->cpb->header.magic_number == CPB_MAGIC_NUMBER &&
+	    plat_database->cpb->header.image_ptr_offset == CPB_IMAGE_PTR_OFFSET) {
 		plat_database->cpb_slots =
 			(CMF_POINTER *)&plat_database->cpb
 				->data[plat_database->cpb->header.image_ptr_offset];
@@ -647,7 +648,8 @@ static RSU_OSAL_INT load_cpb(RSU_OSAL_VOID)
 	if (!cpb0_corrupted) {
 		if (read_part(plat_database->cpb0_part, 0, plat_database->cpb, CPB_BLOCK_SIZE) ==
 			    0 &&
-		    plat_database->cpb->header.magic_number == CPB_MAGIC_NUMBER) {
+		    plat_database->cpb->header.magic_number == CPB_MAGIC_NUMBER &&
+		    plat_database->cpb->header.image_ptr_offset == CPB_IMAGE_PTR_OFFSET) {
 			plat_database->cpb_slots =
 				(CMF_POINTER *)&plat_database->cpb
 					->data[plat_database->cpb->header.image_ptr_offset];
@@ -698,7 +700,8 @@ static RSU_OSAL_INT load_cpb(RSU_OSAL_VOID)
 
 	if (cpb1_good) {
 		if (read_part(plat_database->cpb1_part, 0, plat_database->cpb, CPB_BLOCK_SIZE) ||
-		    plat_database->cpb->header.magic_number != CPB_MAGIC_NUMBER) {
+		    plat_database->cpb->header.magic_number != CPB_MAGIC_NUMBER ||
+		    plat_database->cpb->header.image_ptr_offset != CPB_IMAGE_PTR_OFFSET) {
 			RSU_LOG_ERR("error: Unable to load CPB1");
 			return -EACCES;
 		}
@@ -941,13 +944,12 @@ static RSU_OSAL_CHAR *partition_name(RSU_OSAL_INT part_num)
 
 static RSU_OSAL_INT partition_offset(RSU_OSAL_INT part_num, RSU_OSAL_U64 *offset)
 {
-	if (offset == NULL ) {
+	if (offset == NULL) {
 		RSU_LOG_ERR("offset is NULL");
 		return -EINVAL;
 	}
 
-	if (part_num < 0 ||
-	    (RSU_OSAL_U32)part_num >= plat_database->spt->partitions) {
+	if (part_num < 0 || (RSU_OSAL_U32)part_num >= plat_database->spt->partitions) {
 		RSU_LOG_ERR("Invalid part number");
 		return -EINVAL;
 	}
@@ -1049,7 +1051,7 @@ static RSU_OSAL_INT partition_rename(RSU_OSAL_INT part_num, RSU_OSAL_CHAR *name)
 
 	if (strnlen(name, SPT_PARTITION_NAME_LENGTH) >= SPT_PARTITION_NAME_LENGTH) {
 		RSU_LOG_ERR("error: Partition name is too long - limited to %i",
-			SPT_PARTITION_NAME_LENGTH - 1);
+			    SPT_PARTITION_NAME_LENGTH - 1);
 		return -EINVAL;
 	}
 
@@ -1130,7 +1132,7 @@ static RSU_OSAL_INT partition_create(RSU_OSAL_CHAR *name, RSU_OSAL_U64 start, RS
 
 	if (strnlen(name, SPT_PARTITION_NAME_LENGTH) >= SPT_PARTITION_NAME_LENGTH) {
 		RSU_LOG_ERR("error: Partition name is too long - limited to %i",
-			SPT_PARTITION_NAME_LENGTH - 1);
+			    SPT_PARTITION_NAME_LENGTH - 1);
 		return -EINVAL;
 	}
 
@@ -1308,7 +1310,8 @@ static RSU_OSAL_INT rsu_write(RSU_OSAL_VOID *buf, RSU_OSAL_SIZE len, RSU_OSAL_FI
 	return plat_database->hal->file.write(buf, len, file);
 }
 
-static RSU_OSAL_INT rsu_fseek(RSU_OSAL_OFFSET offset, RSU_filesys_whence_t whence, RSU_OSAL_FILE *file)
+static RSU_OSAL_INT rsu_fseek(RSU_OSAL_OFFSET offset, RSU_filesys_whence_t whence,
+			      RSU_OSAL_FILE *file)
 {
 	return plat_database->hal->file.fseek(offset, whence, file);
 }
@@ -1354,7 +1357,15 @@ static RSU_OSAL_INT restore_spt_from_file(RSU_OSAL_CHAR *name)
 	}
 	RSU_LOG_DBG("read size is %d", ret);
 	calc_crc = rsu_crc32(0, (RSU_OSAL_VOID *)spt_data, SPT_SIZE);
-	rsu_fseek(SPT_SIZE, RSU_SEEK_SET, fp);
+
+	ret = rsu_fseek(SPT_SIZE, RSU_SEEK_SET, fp);
+	if (ret != 0) {
+		RSU_LOG_ERR("failed to fseek");
+		rsu_free(spt_data);
+		rsu_close(fp);
+		return ret;
+	}
+
 	ret = rsu_read(&crc_from_saved_file, sizeof(crc_from_saved_file), fp);
 	if (ret < 0) {
 		RSU_LOG_ERR("failed to read spt_data");
@@ -1391,6 +1402,8 @@ static RSU_OSAL_INT restore_spt_from_file(RSU_OSAL_CHAR *name)
 	ret = writeback_spt();
 	if (ret < 0) {
 		RSU_LOG_ERR("failed to write back spt\n");
+		rsu_free(spt_data);
+		rsu_close(fp);
 		return ret;
 	}
 
@@ -1638,7 +1651,15 @@ static RSU_OSAL_INT restore_cpb_from_file(RSU_OSAL_CHAR *name)
 
 	RSU_LOG_DBG("read size is %d", ret);
 	calc_crc = rsu_crc32(0, (RSU_OSAL_VOID *)cpb_data, CPB_SIZE);
-	rsu_fseek(CPB_SIZE, RSU_SEEK_SET, fp);
+
+	ret = rsu_fseek(CPB_SIZE, RSU_SEEK_SET, fp);
+	if (ret != 0) {
+		RSU_LOG_ERR("failed to fseek, %d", ret);
+		rsu_free(cpb_data);
+		rsu_close(fp);
+		return -EIO;
+	}
+
 	ret = rsu_read(&crc_from_saved_file, sizeof(crc_from_saved_file), fp);
 	if (!ret) {
 		RSU_LOG_ERR("failed to read");

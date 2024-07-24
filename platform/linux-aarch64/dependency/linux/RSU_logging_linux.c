@@ -18,7 +18,8 @@ rsu_loglevel_t rsu_curr_loglevel = L_LOG_LVL;
 rsu_log_type_t rsu_log_type = RSU_STDERR;
 RSU_OSAL_FILE *RSU_log_file = NULL;
 
-#define NUM_ARGS (16U)
+#define NUM_ARGS		(16U)
+#define RSU_DEV_BUF_SIZE	(128U)
 
 RSU_OSAL_INT RSU_set_logging(rsu_loglevel_t level)
 {
@@ -37,7 +38,7 @@ RSU_OSAL_INT RSU_logging_init(RSU_OSAL_CHAR *cfg_file)
 	}
 
 	RSU_OSAL_FILE *file;
-	RSU_OSAL_CHAR line[128], *argv[NUM_ARGS];
+	RSU_OSAL_CHAR line[RSU_DEV_BUF_SIZE] = {0}, *argv[NUM_ARGS] = {0};
 	RSU_OSAL_INT argc;
 	RSU_OSAL_U32 linenum;
 
@@ -47,7 +48,7 @@ RSU_OSAL_INT RSU_logging_init(RSU_OSAL_CHAR *cfg_file)
 	}
 
 	linenum = 0;
-	while (fgets(line, 128, file) != NULL) {
+	while (fgets(line, RSU_DEV_BUF_SIZE, file) != NULL) {
 		linenum++;
 		argc = split_line(line, argv, NUM_ARGS);
 		if (argc != 3) {

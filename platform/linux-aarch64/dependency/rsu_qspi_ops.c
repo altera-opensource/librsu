@@ -134,7 +134,7 @@ RSU_OSAL_INT plat_qspi_init(struct qspi_ll_intf *qspi_intf, RSU_OSAL_CHAR *confi
 
 	RSU_OSAL_CHAR *type_str;
 	RSU_OSAL_FILE *file;
-	RSU_OSAL_CHAR line[RSU_DEV_BUF_SIZE], *argv[NUM_ARGS];
+	RSU_OSAL_CHAR line[RSU_DEV_BUF_SIZE] = {0}, *argv[NUM_ARGS] = {0};
 	RSU_OSAL_INT argc;
 	RSU_OSAL_U32 linenum;
 
