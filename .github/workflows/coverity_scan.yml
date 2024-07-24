@@ -47,7 +47,7 @@ jobs:
             cmake/3.24.0 gcc/${{vars.GCC_VERSION}}
             arm_gnu/linaro/aarch64/9.2
           script: |
-            cmake -S ${{github.workspace}}/work/librsu -B ${{github.workspace}}/work/build -G"Ninja" -DPLATFORM=linux-aarch64
+            cmake -S ${{github.workspace}}/work/librsu -B ${{github.workspace}}/work/build -DPLATFORM=linux-aarch64
 
       - name : Coverity Configure build capture & analyze
         uses: intel-innersource/frameworks.actions.fpga.ci.arc@v1.0
@@ -58,10 +58,11 @@ jobs:
             arm_gnu/linaro/aarch64/9.2
           script: |
             cov-configure --config ${{github.workspace}}/work/config.xml --comptype prefix --compiler ccache --template
-            cov-configure --config ${{github.workspace}}/work/config.xml --template --compiler gcc --comptype gcc
+            cov-configure --config ${{github.workspace}}/work/config.xml --template --compiler aarch64-none-linux-gnu-gcc --comptype gcc
+            cov-configure --config ${{github.workspace}}/work/config.xml --template --compiler aarch64-none-linux-gnu-g++ --comptype g++
             cov-build --config ${{github.workspace}}/work/config.xml --dir ${{github.workspace}}/work/out cmake --build ${{github.workspace}}/work/build
             cov-analyze --dir ${{github.workspace}}/work/out
-            cov-format-errors --dir ${{github.workspace}}/work/out --emacs-style --strip-path ${{github.workspace}}/work/ --exclude-files '/build/.*\.c$' | tee -a ${{github.workspace}}/work/report/report.txt
+            cov-format-errors --dir ${{github.workspace}}/work/out --emacs-style --strip-path ${{github.workspace}}/work/ --exclude-files '\S*_deps\/+\S*' | tee -a ${{github.workspace}}/work/report/report.txt
 
       - name : Check for errors
         run: |
