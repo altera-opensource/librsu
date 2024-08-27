@@ -76,30 +76,38 @@ if(UNIT_TEST)
 endif()
 
 if(PLATFORM STREQUAL linux-aarch64)
+
   add_subdirectory(linux-example)
 
   install(TARGETS uniLibRSU
   LIBRARY
-    DESTINATION usr/lib
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}
     COMPONENT uniLibRSU_lib_Development
   PUBLIC_HEADER
-    DESTINATION include
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     COMPONENT uniLibRSU_lib_Development
   ARCHIVE
-    DESTINATION usr/lib
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}
     COMPONENT uniLibRSU_lib_Development
   )
 
   install(TARGETS uniLibRSU
   LIBRARY
-    DESTINATION usr/lib
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}
     COMPONENT uniLibRSU_lib_Runtime
     NAMELINK_SKIP
   ARCHIVE
-    DESTINATION usr/lib
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}
     COMPONENT uniLibRSU_lib_Runtime
   PUBLIC_HEADER
-    DESTINATION include
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    COMPONENT uniLibRSU_lib_Runtime
+  )
+
+  install(
+  FILES ${CMAKE_CURRENT_SOURCE_DIR}/etc/qspi.rc
+    RENAME librsu.rc
+    DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}
     COMPONENT uniLibRSU_lib_Runtime
   )
 

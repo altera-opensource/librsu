@@ -3,6 +3,8 @@
 
 cmake_minimum_required(VERSION 3.24)
 
+include(GNUInstallDirs)
+
 add_executable(rsu_client rsu_client.c)
 
 find_package(Threads REQUIRED)
@@ -20,14 +22,8 @@ set_target_properties(rsu_client PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY    "${CMAKE_BINARY_DIR}/bin"
 )
 
-install(
-  FILES qspi.rc
-    DESTINATION etc/
-    COMPONENT uniLibRSU_client_Runtime_GSRD
-)
-
 install(TARGETS rsu_client
   RUNTIME
-    DESTINATION home/root
+    DESTINATION ${CMAKE_INSTALL_SBINDIR}
     COMPONENT uniLibRSU_client_Runtime_GSRD
 )
