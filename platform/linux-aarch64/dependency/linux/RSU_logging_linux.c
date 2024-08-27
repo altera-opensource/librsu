@@ -124,6 +124,7 @@ RSU_OSAL_VOID RSU_logger(rsu_loglevel_t level, const RSU_OSAL_CHAR *format, ...)
 		va_start(arg, format);
 		vfprintf(stderr, format, arg);
 		va_end(arg);
+		fprintf(stderr, "\n");
 		fflush(stderr);
 	} else if (rsu_log_type == RSU_FILE) {
 		if (!RSU_log_file) {
@@ -134,6 +135,7 @@ RSU_OSAL_VOID RSU_logger(rsu_loglevel_t level, const RSU_OSAL_CHAR *format, ...)
 		va_start(arg, format);
 		vfprintf(RSU_log_file, format, arg);
 		va_end(arg);
+		fprintf(RSU_log_file, "\n");
 		fflush(RSU_log_file);
 	}
 }
