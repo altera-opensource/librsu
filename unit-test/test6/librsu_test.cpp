@@ -53,15 +53,15 @@ TEST(librsu_test6, test_callback_program_verify)
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"P4");
-	ASSERT_EQ(ret, 10);
+	ASSERT_EQ(ret, 4);
 
-	ret = rsu_slot_erase(10);
+	ret = rsu_slot_erase(4);
 	ASSERT_EQ(ret, 0);
 
 	ret = file_callback_init();
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_program_callback(10, data_callback_file);
+	ret = rsu_slot_program_callback(4, data_callback_file);
 	ASSERT_EQ(ret, 0);
 
 	file_callback_exit();
@@ -69,7 +69,7 @@ TEST(librsu_test6, test_callback_program_verify)
 	ret = file_callback_init();
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_verify_callback(10, data_callback_file);
+	ret = rsu_slot_verify_callback(4, data_callback_file);
 	ASSERT_EQ(ret, 0);
 
 	file_callback_exit();
@@ -138,15 +138,15 @@ TEST(librsu_test6, test_callback_program_verify_raw_buf)
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"fip1");
-	ASSERT_EQ(ret, 10);
+	ASSERT_EQ(ret, 4);
 
-	ret = rsu_slot_erase(10);
+	ret = rsu_slot_erase(4);
 	ASSERT_EQ(ret, 0);
 
 	ret = buf_callback_init();
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_program_callback_raw(10, data_callback_buf);
+	ret = rsu_slot_program_callback_raw(4, data_callback_buf);
 	ASSERT_EQ(ret, 0);
 
 	buf_callback_exit();
@@ -154,7 +154,7 @@ TEST(librsu_test6, test_callback_program_verify_raw_buf)
 	ret = buf_callback_init();
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_verify_callback_raw(10, data_callback_buf);
+	ret = rsu_slot_verify_callback_raw(4, data_callback_buf);
 	ASSERT_EQ(ret, 0);
 
 	buf_callback_exit();

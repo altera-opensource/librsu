@@ -138,7 +138,7 @@ TEST(librsu_test5, save_restore_empty_cpb)
 	ASSERT_EQ(ret, 0);
 
 	struct rsu_slot_info info;
-	ret = rsu_slot_get_info(3, &info);
+	ret = rsu_slot_get_info(1, &info);
 	ASSERT_EQ(ret, 0);
 	ASSERT_STREQ(info.name, "P2");
 	ASSERT_EQ(info.priority, 2);
@@ -146,7 +146,7 @@ TEST(librsu_test5, save_restore_empty_cpb)
 	ret = rsu_create_empty_cpb();
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_get_info(3, &info);
+	ret = rsu_slot_get_info(1, &info);
 	ASSERT_EQ(ret, 0);
 	ASSERT_STREQ(info.name, "P2");
 	ASSERT_EQ(info.priority, 0);
@@ -164,7 +164,7 @@ TEST(librsu_test5, save_restore_empty_cpb)
 	ret = rsu_restore_cpb((RSU_OSAL_CHAR *)"save.cpb");
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_get_info(3, &info);
+	ret = rsu_slot_get_info(1, &info);
 	ASSERT_EQ(ret, 0);
 	ASSERT_STREQ(info.name, "P2");
 

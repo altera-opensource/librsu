@@ -195,9 +195,9 @@ TEST(librsu_test3, test_one_slot)
 
 	char c[] = "SLOT1";
 	ret = rsu_slot_by_name(c);
-	ASSERT_EQ(ret, 4);
+	ASSERT_EQ(ret, 0);
 
-	int slot = 4;
+	int slot = 0;
 	struct rsu_slot_info info;
 	ret = rsu_slot_get_info((int)slot, &info);
 	ASSERT_EQ(ret, 0);

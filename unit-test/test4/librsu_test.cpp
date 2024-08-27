@@ -16,15 +16,15 @@ TEST(librsu_test4, test_init_slot_copy_verify)
 	ASSERT_EQ(ret, 4);
 
 	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"fip");
-	ASSERT_EQ(ret, 9);
+	ASSERT_EQ(ret, 3);
 
 	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"P3");
-	ASSERT_EQ(ret, 4);
+	ASSERT_EQ(ret, 2);
 
-	ret = rsu_slot_copy_to_file(4, (RSU_OSAL_CHAR *)"app_image.rpd");
+	ret = rsu_slot_copy_to_file(2, (RSU_OSAL_CHAR *)"app_image.rpd");
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_verify_file(4, (RSU_OSAL_CHAR *)"app_image.rpd");
+	ret = rsu_slot_verify_file(2, (RSU_OSAL_CHAR *)"app_image.rpd");
 	ASSERT_EQ(ret, 0);
 
 	librsu_exit();
@@ -36,10 +36,10 @@ TEST(librsu_test4, test_init_slot_create_program)
 	ret = librsu_init((RSU_OSAL_CHAR *)"librsu_config.rc");
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_copy_to_file(4, (RSU_OSAL_CHAR *)"app_image1.rpd");
+	ret = rsu_slot_copy_to_file(2, (RSU_OSAL_CHAR *)"app_image1.rpd");
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_delete(4);
+	ret = rsu_slot_delete(2);
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_count();
@@ -49,15 +49,15 @@ TEST(librsu_test4, test_init_slot_create_program)
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"P4");
-	ASSERT_EQ(ret, 9);
+	ASSERT_EQ(ret, 3);
 
-	ret = rsu_slot_erase(9);
+	ret = rsu_slot_erase(3);
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_program_file(9, (RSU_OSAL_CHAR *)"app_image1.rpd");
+	ret = rsu_slot_program_file(3, (RSU_OSAL_CHAR *)"app_image1.rpd");
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_verify_file(9, (RSU_OSAL_CHAR *)"app_image1.rpd");
+	ret = rsu_slot_verify_file(3, (RSU_OSAL_CHAR *)"app_image1.rpd");
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_count();
@@ -72,11 +72,11 @@ TEST(librsu_test4, test_init_slot_rename)
 	ret = librsu_init((RSU_OSAL_CHAR *)"librsu_config.rc");
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_rename(4, (RSU_OSAL_CHAR *)"P5");
+	ret = rsu_slot_rename(2, (RSU_OSAL_CHAR *)"P5");
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"P5");
-	ASSERT_EQ(ret, 4);
+	ASSERT_EQ(ret, 2);
 
 	librsu_exit();
 }
@@ -89,7 +89,7 @@ TEST(librsu_test4, test_init_slot_parameters)
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"P3");
-	ASSERT_EQ(ret, 4);
+	ASSERT_EQ(ret, 2);
 
 	slot = ret;
 
@@ -114,16 +114,16 @@ TEST(librsu_test4, test_init_slot_raw_program_verify)
 	ret = librsu_init((RSU_OSAL_CHAR *)"librsu_config.rc");
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_copy_to_file(4, (RSU_OSAL_CHAR *)"app_image_raw.bin");
+	ret = rsu_slot_copy_to_file(2, (RSU_OSAL_CHAR *)"app_image_raw.bin");
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_create((RSU_OSAL_CHAR *)"raw4", 0x640000, 1048576);
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"raw4");
-	ASSERT_EQ(ret, 10);
+	ASSERT_EQ(ret, 4);
 
-	slot = 10;
+	slot = 4;
 
 	ret = rsu_slot_erase(slot);
 	ASSERT_EQ(ret, 0);
@@ -147,10 +147,10 @@ TEST(librsu_test4, test_init_slot_priority)
 	ASSERT_EQ(ret, 0);
 
 	slot2 = rsu_slot_by_name((RSU_OSAL_CHAR *)"P2");
-	ASSERT_EQ(slot2, 3);
+	ASSERT_EQ(slot2, 1);
 
 	slot3 = rsu_slot_by_name((RSU_OSAL_CHAR *)"P3");
-	ASSERT_EQ(slot3, 4);
+	ASSERT_EQ(slot3, 2);
 
 	ret = rsu_slot_priority(slot2);
 	ASSERT_EQ(ret, 2);
@@ -183,7 +183,7 @@ TEST(librsu_test4, test_init_slot_priority)
 	ASSERT_EQ(ret, 3);
 
 	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"P2");
-	ASSERT_EQ(ret, 3);
+	ASSERT_EQ(ret, 1);
 
 	librsu_exit();
 }
@@ -206,15 +206,15 @@ TEST(librsu_test4, test_init_slot_app1)
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"P4");
-	ASSERT_EQ(ret, 10);
+	ASSERT_EQ(ret, 4);
 
-	ret = rsu_slot_erase(10);
+	ret = rsu_slot_erase(4);
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_program_file(10, (RSU_OSAL_CHAR *)"dependency/app1.rpd");
+	ret = rsu_slot_program_file(4, (RSU_OSAL_CHAR *)"dependency/app1.rpd");
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_verify_file(10, (RSU_OSAL_CHAR *)"dependency/app1.rpd");
+	ret = rsu_slot_verify_file(4, (RSU_OSAL_CHAR *)"dependency/app1.rpd");
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_count();
@@ -241,15 +241,15 @@ TEST(librsu_test4, test_init_slot_app2)
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"P4");
-	ASSERT_EQ(ret, 10);
+	ASSERT_EQ(ret, 4);
 
-	ret = rsu_slot_erase(10);
+	ret = rsu_slot_erase(4);
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_program_file(10, (RSU_OSAL_CHAR *)"dependency/app2.rpd");
+	ret = rsu_slot_program_file(4, (RSU_OSAL_CHAR *)"dependency/app2.rpd");
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_verify_file(10, (RSU_OSAL_CHAR *)"dependency/app2.rpd");
+	ret = rsu_slot_verify_file(4, (RSU_OSAL_CHAR *)"dependency/app2.rpd");
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_count();
@@ -275,15 +275,15 @@ TEST(librsu_test4, test_init_slot_app3)
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"P4");
-	ASSERT_EQ(ret, 10);
+	ASSERT_EQ(ret, 4);
 
-	ret = rsu_slot_erase(10);
+	ret = rsu_slot_erase(4);
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_program_file(10, (RSU_OSAL_CHAR *)"dependency/app3.rpd");
+	ret = rsu_slot_program_file(4, (RSU_OSAL_CHAR *)"dependency/app3.rpd");
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_verify_file(10, (RSU_OSAL_CHAR *)"dependency/app3.rpd");
+	ret = rsu_slot_verify_file(4, (RSU_OSAL_CHAR *)"dependency/app3.rpd");
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_count();
@@ -324,9 +324,9 @@ TEST(librsu_test, rsu_slot_load_factory_after_reboot)
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"P3");
-	ASSERT_EQ(ret, 4);
+	ASSERT_EQ(ret, 2);
 
-	ret = rsu_slot_load_after_reboot(4);
+	ret = rsu_slot_load_after_reboot(2);
 	ASSERT_EQ(ret, 0);
 	librsu_exit();
 }
@@ -347,16 +347,20 @@ TEST(librsu_test4, test_init_slot_create_program_buf)
 	ret = librsu_init((RSU_OSAL_CHAR *)"librsu_config.rc");
 	ASSERT_EQ(ret, 0);
 
-	RSU_OSAL_SIZE size = rsu_slot_size(4);
+	int slot = rsu_slot_by_name((RSU_OSAL_CHAR *)"P3");
+	ASSERT_EQ(slot, 2);
+
+	RSU_OSAL_SIZE size = rsu_slot_size(slot);
+	printf("the size is %lu\n",size);
 	ASSERT_GT(size, 0);
 
 	RSU_OSAL_U8 *buffer = (RSU_OSAL_U8 *)malloc(size);
 	ASSERT_NE(buffer, (RSU_OSAL_U8 *)NULL);
 
-	ret = rsu_slot_copy_to_buf(4, buffer, size);
+	ret = rsu_slot_copy_to_buf(slot, buffer, size);
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_delete(4);
+	ret = rsu_slot_delete(slot);
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_count();
@@ -365,16 +369,16 @@ TEST(librsu_test4, test_init_slot_create_program_buf)
 	ret = rsu_slot_create((RSU_OSAL_CHAR *)"P4", 0x640000, 1048576);
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"P4");
-	ASSERT_EQ(ret, 9);
+	slot = rsu_slot_by_name((RSU_OSAL_CHAR *)"P4");
+	ASSERT_EQ(slot, 3);
 
-	ret = rsu_slot_erase(9);
+	ret = rsu_slot_erase(slot);
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_program_buf(9, buffer, size);
+	ret = rsu_slot_program_buf(slot, buffer, size);
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_verify_buf(9, buffer, size);
+	ret = rsu_slot_verify_buf(slot, buffer, size);
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_count();
@@ -392,7 +396,7 @@ TEST(librsu_test4, test_init_slot_create_program_raw_buf)
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_by_name((RSU_OSAL_CHAR *)"fip");
-	ASSERT_EQ(ret, 9);
+	ASSERT_EQ(ret, 3);
 
 	FILE *fp = fopen("dependency/fip.bin", "rb+");
 	ASSERT_NE(fp, (FILE *)NULL);
@@ -411,13 +415,13 @@ TEST(librsu_test4, test_init_slot_create_program_raw_buf)
 	ret = rsu_slot_count();
 	ASSERT_EQ(ret, 4);
 
-	ret = rsu_slot_erase(9);
+	ret = rsu_slot_erase(3);
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_program_buf_raw(9, buffer, size);
+	ret = rsu_slot_program_buf_raw(3, buffer, size);
 	ASSERT_EQ(ret, 0);
 
-	ret = rsu_slot_verify_buf_raw(9, buffer, size);
+	ret = rsu_slot_verify_buf_raw(3, buffer, size);
 	ASSERT_EQ(ret, 0);
 
 	ret = rsu_slot_count();

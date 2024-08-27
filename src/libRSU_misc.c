@@ -76,15 +76,16 @@ RSU_OSAL_BOOL librsu_misc_is_slot(struct librsu_hl_intf *intf, RSU_OSAL_INT part
 RSU_OSAL_INT librsu_misc_slot2part(struct librsu_hl_intf *intf, RSU_OSAL_INT slot)
 {
 	RSU_OSAL_INT partitions;
-	RSU_OSAL_INT x;
+	RSU_OSAL_INT x, cnt = 0;
 
 	partitions = intf->partition.count();
 
 	for (x = 0; x < partitions; x++) {
 		if (librsu_misc_is_slot(intf, x)) {
-			if (slot == x) {
+			if (slot == cnt) {
 				return x;
 			}
+			cnt++;
 		}
 	}
 

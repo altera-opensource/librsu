@@ -249,7 +249,7 @@ RSU_OSAL_INT rsu_slot_count(RSU_OSAL_VOID)
 RSU_OSAL_INT rsu_slot_by_name(RSU_OSAL_CHAR *name)
 {
 	RSU_OSAL_INT partitions;
-	RSU_OSAL_INT x;
+	RSU_OSAL_INT x, cnt = 0;
 
 	if (ctx.state != initialized) {
 		RSU_LOG_ERR("Library not initialized");
@@ -274,8 +274,9 @@ RSU_OSAL_INT rsu_slot_by_name(RSU_OSAL_CHAR *name)
 		if (librsu_misc_is_slot(intf, x)) {
 			if (!strcmp(name, intf->partition.name(x))) {
 				MUTEX_UNLOCK();
-				return x;
+				return cnt;
 			}
+			cnt++;
 		}
 	}
 
