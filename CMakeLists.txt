@@ -4,6 +4,7 @@
 cmake_minimum_required(VERSION 3.24)
 
 include(CMakePackageConfigHelpers)
+include(GNUInstallDirs)
 
 include(cmake/platform.cmake)
 include(cmake/coverage.cmake)
@@ -81,26 +82,26 @@ if(PLATFORM STREQUAL linux-aarch64)
 
   install(TARGETS uniLibRSU
   LIBRARY
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    DESTINATION usr/lib
     COMPONENT uniLibRSU_lib_Development
   PUBLIC_HEADER
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    DESTINATION usr/include
     COMPONENT uniLibRSU_lib_Development
   ARCHIVE
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    DESTINATION usr/lib
     COMPONENT uniLibRSU_lib_Development
   )
 
   install(TARGETS uniLibRSU
   LIBRARY
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    DESTINATION usr/lib
     COMPONENT uniLibRSU_lib_Runtime
     NAMELINK_SKIP
   ARCHIVE
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    DESTINATION usr/lib
     COMPONENT uniLibRSU_lib_Runtime
   PUBLIC_HEADER
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    DESTINATION usr/include
     COMPONENT uniLibRSU_lib_Runtime
   )
 

@@ -24,6 +24,6 @@ set_target_properties(rsu_client PROPERTIES
 
 install(TARGETS rsu_client
   RUNTIME
-    DESTINATION ${CMAKE_INSTALL_SBINDIR}
+    DESTINATION usr/bin
     COMPONENT uniLibRSU_client_Runtime_GSRD
 )

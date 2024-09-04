@@ -48,10 +48,10 @@ jobs:
           script: |
             set -ex
             cmake --install ${{github.workspace}}/work/build --prefix=${{github.workspace}}/work/deploy -v --component uniLibRSU_lib_Runtime
-            test -f "${{github.workspace}}/work/deploy/lib/libuniLibRSU.so.$(cat ${{github.workspace}}/work/build/CMakeCache.txt  | grep CMAKE_PROJECT_VERSION_MAJOR |  cut -d "=" -f2)"
-            test -f "${{github.workspace}}/work/deploy/include/RSU_OSAL_types.h"
-            test -f "${{github.workspace}}/work/deploy/include/libRSU.h"
-            test -f "${{github.workspace}}/work/deploy/include/libRSU_OSAL.h"
+            test -f "${{github.workspace}}/work/deploy/usr/lib/libuniLibRSU.so.$(cat ${{github.workspace}}/work/build/CMakeCache.txt  | grep CMAKE_PROJECT_VERSION_MAJOR |  cut -d "=" -f2)"
+            test -f "${{github.workspace}}/work/deploy/usr/include/RSU_OSAL_types.h"
+            test -f "${{github.workspace}}/work/deploy/usr/include/libRSU.h"
+            test -f "${{github.workspace}}/work/deploy/usr/include/libRSU_OSAL.h"
             test -f "${{github.workspace}}/work/deploy/etc/librsu.rc"
 
       - name: deploy client application
@@ -64,4 +64,4 @@ jobs:
           script: |
             set -ex
             cmake --install ${{github.workspace}}/work/build --prefix=${{github.workspace}}/work/deploy -v --component uniLibRSU_client_Runtime_GSRD
-            test -x "${{github.workspace}}/work/deploy/sbin/rsu_client"
+            test -x "${{github.workspace}}/work/deploy/usr/bin/rsu_client"
